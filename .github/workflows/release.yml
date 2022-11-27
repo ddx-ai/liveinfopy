@@ -26,7 +26,7 @@ jobs:
             python_version: '3.8.10' # the latest version of 3.8.x
             sed: 'sed'
             tar: 'tar'
-            artifact_name: liveinfo
+            artifact_name: liveinfo.exe
             asset_name: liveinfo-windows-amd64.zip
           - 
             os: macos-11
