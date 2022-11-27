@@ -19,7 +19,7 @@ def guess_service(live_id_or_url: str) -> Optional[Literal['nicolive']]:
 def main():
   import argparse
   parser = argparse.ArgumentParser()
-  parser.add_argument('--service', type=str, choices=['nicolive'])
+  parser.add_argument('-s', '--service', type=str, choices=['nicolive'])
   parser.add_argument('live_id_or_url', type=str)
   args = parser.parse_args()
 
