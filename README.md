@@ -1,5 +1,21 @@
 # liveinfopy
 
+## Installation
+
+### PyPI
+
+- <https://pypi.org/project/aoirint-liveinfo/>
+
+```shell
+pip3 install aoirint-liveinfo
+```
+
+### Binary
+
+- <https://github.com/aoirint/liveinfopy/releases>
+
+
+
 ## Dependencies
 
 - Python 3.10
