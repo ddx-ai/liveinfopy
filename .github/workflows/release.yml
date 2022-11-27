@@ -18,24 +18,33 @@ jobs:
             os: ubuntu-20.04
             python_version: '3.8.14' # the latest version of 3.8.x
             sed: 'sed'
+            tar: 'tar'
+            artifact_name: liveinfo
+            asset_name: liveinfo-linux-amd64.tgz
           - 
             os: windows-2019
             python_version: '3.8.10' # the latest version of 3.8.x
             sed: 'sed'
+            tar: 'tar'
+            artifact_name: liveinfo
+            asset_name: liveinfo-windows-amd64.zip
           - 
             os: macos-11
             python_version: '3.8.14' # the latest version of 3.8.x
             sed: 'gsed'
+            tar: 'gtar'
+            artifact_name: liveinfo
+            asset_name: liveinfo-macos-amd64.tgz
 
     runs-on: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install gsed for macOS
+      - name: Install gsed, gtar for macOS
         if: startsWith(matrix.os, 'macos-')
         shell: bash
-        run: brew install gnu-sed
+        run: brew install gnu-sed gnu-tar
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -74,13 +83,35 @@ jobs:
             dist/*.whl
 
       - name: Build Binary
+        run: pyinstaller --name liveinfo --onefile main.py
+
+      - name: Create release asset (.tgz)
+        if: endsWith(matrix.asset_name, '.tgz')
+        shell: bash
         run: |
-          pyinstaller --name liveinfo --onefile main.py
+          ASSET_NAME="${{ matrix.asset_name }}"
+          ASSET_NAME_STEM="${ASSET_NAME%.*}"
+
+          mkdir "${ASSET_NAME_STEM}"
+          mv "dist/${{ matrix.artifact_name }}" "${ASSET_NAME_STEM}/"
+
+          tar czf "${ASSET_NAME}" "${ASSET_NAME_STEM}/"
+
+      - name: Create release asset (.zip)
+        if: endsWith(matrix.asset_name, '.zip')
+        shell: bash
+        run: |
+          ASSET_NAME="${{ matrix.asset_name }}"
+          ASSET_NAME_STEM="${ASSET_NAME%.*}"
+
+          mkdir "${ASSET_NAME_STEM}"
+          mv "dist/${{ matrix.artifact_name }}" "${ASSET_NAME_STEM}/"
+
+          zip "${ASSET_NAME}" "${ASSET_NAME_STEM}/"
 
       - name: Upload Binary to Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ env.VERSION }}
           target_commitish: ${{ github.sha }}
-          files: |-
-            dist/liveinfo
+          files: dist/${{ matrix.asset_name }}
