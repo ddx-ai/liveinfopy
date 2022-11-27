@@ -1,15 +1,16 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-from datetime import datetime
 from dataclasses import dataclass
 from typing import Literal, Optional, Union
 import re
 from urllib.parse import urlparse
 
+
 """
   Public APIs
 """
+
 
 @dataclass
 class GetNicoliveProgramNicoliveProgramData:
@@ -17,8 +18,9 @@ class GetNicoliveProgramNicoliveProgramData:
   description: Optional[str]
   url: Optional[str]
   thumbnail_url: Optional[str]
-  start_date: Optional[str] # ISO8601 timezone-aware datetime string
-  end_date: Optional[str] # ISO8601 timezone-aware datetime string
+  start_date: Optional[str]  # ISO8601 timezone-aware datetime string
+  end_date: Optional[str]  # ISO8601 timezone-aware datetime string
+
 
 @dataclass
 class GetNicoliveProgramSuccessNicoliveProgramResult:
@@ -26,21 +28,26 @@ class GetNicoliveProgramSuccessNicoliveProgramResult:
   data_type: Literal['nicolive_program']
   data: GetNicoliveProgramNicoliveProgramData
 
+
 @dataclass
 class GetNicoliveProgramInvalidLiveIdOrUrlResult:
   result_type: Literal['invalid_live_id_or_url']
+
 
 @dataclass
 class GetNicoliveProgramNotFoundResult:
   result_type: Literal['not_found']
 
+
 @dataclass
 class GetNicoliveProgramMaintenanceResult:
   result_type: Literal['maintenance']
 
+
 @dataclass
 class GetNicoliveProgramUnknownErrorResult:
   result_type: Literal['unknown_error']
+
 
 GetNicoliveProgramResult = Union[
   GetNicoliveProgramSuccessNicoliveProgramResult,
@@ -50,11 +57,15 @@ GetNicoliveProgramResult = Union[
   GetNicoliveProgramUnknownErrorResult,
 ]
 
+
 def get_nicolive_program(
   live_id_or_url: str,
   useragent: str,
 ) -> GetNicoliveProgramResult:
-  nicolive_watch_result = fetch_nicolive_watch(live_id_or_url=live_id_or_url, useragent=useragent)
+  nicolive_watch_result = fetch_nicolive_watch(
+    live_id_or_url=live_id_or_url,
+    useragent=useragent,
+  )
 
   if nicolive_watch_result.result_type == 'success':
     if nicolive_watch_result.data_type == 'html':
@@ -64,8 +75,11 @@ def get_nicolive_program(
       description: Optional[str] = None
       url: Optional[str] = None
       thumbnail_url: Optional[str] = None
-      start_date: Optional[str] = None # ISO8601 timezone-aware datetime string
-      end_date: Optional[str] = None # ISO8601 timezone-aware datetime string
+
+      # start_date, end_date
+      #   ISO8601 timezone-aware datetime string
+      start_date: Optional[str] = None
+      end_date: Optional[str] = None
 
       ogp_result = parse_ogp_in_nicolive_watch_html(html=html)
       if ogp_result.result_type == 'success':
@@ -119,12 +133,15 @@ def get_nicolive_program(
 
 
 """
-  Private API: Fetch a watch page HTML ( https://live.nicovideo.jp/watch/{live_id} )
+  Private API: Fetch a watch page HTML
+  https://live.nicovideo.jp/watch/{live_id}
 """
+
 
 @dataclass
 class FetchNicoliveWatchSuccessHtmlData:
   html: str
+
 
 @dataclass
 class FetchNicoliveWatchSuccessHtmlResult:
@@ -132,21 +149,26 @@ class FetchNicoliveWatchSuccessHtmlResult:
   data_type: Literal['html']
   data: FetchNicoliveWatchSuccessHtmlData
 
+
 @dataclass
 class FetchNicoliveWatchInvalidLiveIdOrUrlResult:
   result_type: Literal['invalid_live_id_or_url']
+
 
 @dataclass
 class FetchNicoliveWatchNotFoundResult:
   result_type: Literal['not_found']
 
+
 @dataclass
 class FetchNicoliveWatchMaintenanceResult:
   result_type: Literal['maintenance']
 
+
 @dataclass
 class FetchNicoliveWatchUnknownResult:
   result_type: Literal['unknown']
+
 
 FetchNicoliveWatchResult = Union[
   FetchNicoliveWatchSuccessHtmlResult,
@@ -174,11 +196,11 @@ def validate_live_id(live_id: str) -> bool:
 
 def validate_live_url_and_get_safe_live_id(live_url: str) -> Optional[str]:
   urlp = urlparse(live_url)
-  
+
   if urlp.scheme == 'https' and \
       urlp.hostname == 'live.nicovideo.jp' and \
       urlp.path.startswith('/watch/'):
-    live_id = urlp.path[7:] # cut "/watch/"
+    live_id = urlp.path[7:]  # cut "/watch/"
     if validate_live_id(live_id=live_id):
       return live_id
 
@@ -215,7 +237,10 @@ def fetch_nicolive_watch(
     'User-Agent': useragent,
   }
 
-  res = requests.get(f'https://live.nicovideo.jp/watch/{safe_live_id}', headers=headers)
+  res = requests.get(
+    f'https://live.nicovideo.jp/watch/{safe_live_id}',
+    headers=headers,
+  )
   status_code = res.status_code
   if status_code == 200:
     html = res.text
@@ -244,12 +269,15 @@ def fetch_nicolive_watch(
 
 
 """
-  Private API: Parse a live url in a watch page HTML ( https://live.nicovideo.jp/watch/{live_id} )
+  Private API: Parse a live url in a watch page HTML
+  https://live.nicovideo.jp/watch/{live_id}
 """
+
 
 @dataclass
 class ParseOgpInNicoliveWatchHtmlSuccessOgpData:
   url: Optional[str]
+
 
 @dataclass
 class ParseOgpInNicoliveWatchHtmlSuccessOgpResult:
@@ -257,16 +285,21 @@ class ParseOgpInNicoliveWatchHtmlSuccessOgpResult:
   data_type: Literal['ogp']
   data: ParseOgpInNicoliveWatchHtmlSuccessOgpData
 
+
 @dataclass
 class ParseOgpInNicoliveWatchHtmlUnknownErrorResult:
   result_type: Literal['unknown_error']
+
 
 ParseOgpInNicoliveWatchHtmlResult = Union[
   ParseOgpInNicoliveWatchHtmlSuccessOgpResult,
   ParseOgpInNicoliveWatchHtmlUnknownErrorResult,
 ]
 
-def parse_ogp_in_nicolive_watch_html(html: str) -> ParseOgpInNicoliveWatchHtmlResult:
+
+def parse_ogp_in_nicolive_watch_html(
+  html: str,
+) -> ParseOgpInNicoliveWatchHtmlResult:
   bs = BeautifulSoup(html, 'html5lib')
 
   og_url_tag = bs.find('meta', attrs={'property': 'og:url', 'content': True})
@@ -282,16 +315,19 @@ def parse_ogp_in_nicolive_watch_html(html: str) -> ParseOgpInNicoliveWatchHtmlRe
 
 
 """
-  Private API: Parse a json-ld in a watch page HTML ( https://live.nicovideo.jp/watch/{live_id} )
+  Private API: Parse a json-ld in a watch page HTML
+  https://live.nicovideo.jp/watch/{live_id}
 """
+
 
 @dataclass
 class ParseJsonLdInNicoliveWatchHtmlSuccessJsonLdData:
   name: Optional[str]
   description: Optional[str]
   thumbnail_url: Optional[str]
-  start_date: Optional[str] # ISO8601 timezone-aware datetime string
-  end_date: Optional[str] # ISO8601 timezone-aware datetime string
+  start_date: Optional[str]  # ISO8601 timezone-aware datetime string
+  end_date: Optional[str]  # ISO8601 timezone-aware datetime string
+
 
 @dataclass
 class ParseJsonLdInNicoliveWatchHtmlSuccessJsonLdResult:
@@ -299,13 +335,16 @@ class ParseJsonLdInNicoliveWatchHtmlSuccessJsonLdResult:
   data_type: Literal['json_ld']
   data: ParseJsonLdInNicoliveWatchHtmlSuccessJsonLdData
 
+
 @dataclass
 class ParseJsonLdInNicoliveWatchHtmlNotFoundResult:
   result_type: Literal['not_found']
 
+
 @dataclass
 class ParseJsonLdInNicoliveWatchHtmlUnknownErrorResult:
   result_type: Literal['unknown_error']
+
 
 ParseJsonLdInNicoliveWatchHtmlResult = Union[
   ParseJsonLdInNicoliveWatchHtmlSuccessJsonLdResult,
@@ -313,7 +352,10 @@ ParseJsonLdInNicoliveWatchHtmlResult = Union[
   ParseJsonLdInNicoliveWatchHtmlUnknownErrorResult,
 ]
 
-def parse_json_ld_in_nicolive_watch_html(html: str) -> ParseJsonLdInNicoliveWatchHtmlResult:
+
+def parse_json_ld_in_nicolive_watch_html(
+  html: str,
+) -> ParseJsonLdInNicoliveWatchHtmlResult:
   bs = BeautifulSoup(html, 'html5lib')
 
   json_ld_tag = bs.find('script', attrs={'type': 'application/ld+json'})
@@ -330,8 +372,11 @@ def parse_json_ld_in_nicolive_watch_html(html: str) -> ParseJsonLdInNicoliveWatc
   thumbnail_url = json_ld_data.get('thumbnailUrl', [])
 
   publication = json_ld_data.get('publication', {})
-  start_date = publication.get('startDate') # ISO8601 timezone-aware datetime string
-  end_date = publication.get('endDate')  # ISO8601 timezone-aware datetime string
+
+  # start_date, end_date
+  #   ISO8601 timezone-aware datetime string
+  start_date = publication.get('startDate')
+  end_date = publication.get('endDate')
 
   return ParseJsonLdInNicoliveWatchHtmlSuccessJsonLdResult(
     result_type='success',
