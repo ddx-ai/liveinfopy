@@ -63,6 +63,7 @@ python3 main.py -s nicolive "ch2646073"
 
 - `https://nfc-api.nicochannel.jp/fc/fanclub_sites/{fanclub_site_id}/live_pages?page={page}&live_type={live_type}&per_page={per_page}`
   - `https://nicochannel.jp/{channel_slug}/lives`で表示される生放送番組一覧
+  - `fanclub_site_id`: `channel_slug`とは異なる数値ID
   - `live_type`
     - `1`(CURRENT): 放送中
     - `2`(SCHEDULED): 放送予定
