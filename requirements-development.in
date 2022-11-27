@@ -3,5 +3,6 @@
 mypy
 types-requests
 types-beautifulsoup4
+types-setuptools
 pytest
 flake8

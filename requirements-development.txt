@@ -54,6 +54,8 @@ types-beautifulsoup4==4.11.6.1
     # via -r requirements-development.in
 types-requests==2.28.11.5
     # via -r requirements-development.in
+types-setuptools==65.6.0.1
+    # via -r requirements-development.in
 types-urllib3==1.26.25.4
     # via types-requests
 typing-extensions==4.4.0
