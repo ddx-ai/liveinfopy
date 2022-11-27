@@ -1,4 +1,4 @@
-import live_info_api_client
+import liveinfo
 
 
 def main():
@@ -12,7 +12,7 @@ def main():
   service = args.service
 
   print(
-    live_info_api_client.get_live_program(
+    liveinfo.get_live_program(
       live_id_or_url=live_id_or_url,
       service=service,
     )

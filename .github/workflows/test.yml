@@ -58,7 +58,7 @@ jobs:
       - name: Replace version
         shell: bash
         run: |
-          "${{ matrix.sed }}" -i "s/__VERSION__ = '0.0.0'/__VERSION__ = '${{ env.VERSION }}'/" live_info_api_client/__init__.py
+          "${{ matrix.sed }}" -i "s/__VERSION__ = '0.0.0'/__VERSION__ = '${{ env.VERSION }}'/" liveinfo/__init__.py
 
       - name: Flake8
         shell: bash

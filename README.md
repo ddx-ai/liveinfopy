@@ -1,4 +1,4 @@
-# live_info_api_client_py
+# liveinfopy
 
 ## Dependencies
 

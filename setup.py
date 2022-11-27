@@ -1,11 +1,11 @@
 from setuptools import setup, find_packages
 from pathlib import Path
 
-from live_info_api_client import __VERSION__ as VERSION
+from liveinfo import __VERSION__ as VERSION
 
 
 setup(
-  name='aoirint_live_info',
+  name='aoirint_liveinfo',
 
   # version example
   #   '0.1.0-alpha', # == 0.1.0-alpha0 == 0.1.0a0
@@ -19,8 +19,8 @@ setup(
   # entry_points = {
   #   'console_scripts': [
   #     # create `main` function in
-  #     #   live_info_api_client/hoge.py
-  #     'hoge = live_info_api_client.hoge:main',
+  #     #   liveinfo/hoge.py
+  #     'hoge = aoirint_liveinfo.hoge:main',
   #   ],
   # },
 
@@ -31,7 +31,7 @@ setup(
   author='aoirint',
   author_email='aoirint@gmail.com',
 
-  url='https://github.com/aoirint/live_info_api_client_py',
+  url='https://github.com/aoirint/liveinfopy',
   # description='SHORT_DESCRIPTION',
 
   long_description=Path('README.md').read_text(encoding='utf-8'),
