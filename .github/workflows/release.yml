@@ -95,7 +95,7 @@ jobs:
           mkdir "${ASSET_NAME_STEM}"
           mv "dist/${{ matrix.artifact_name }}" "${ASSET_NAME_STEM}/"
 
-          "${{ matrix.tar }}" czf "${ASSET_NAME}" "${ASSET_NAME_STEM}/"
+          "${{ matrix.tar }}" czf "${{ matrix.asset_name }}" "${ASSET_NAME_STEM}/"
 
       - name: Create release asset (.zip)
         if: endsWith(matrix.asset_name, '.zip')
@@ -107,7 +107,7 @@ jobs:
           mkdir "${ASSET_NAME_STEM}"
           mv "dist/${{ matrix.artifact_name }}" "${ASSET_NAME_STEM}/"
 
-          zip -r "${ASSET_NAME}" "${ASSET_NAME_STEM}/"
+          zip -r "${{ matrix.asset_name }}" "${ASSET_NAME_STEM}/"
 
       - name: Upload Binary to Release
         uses: softprops/action-gh-release@v1
