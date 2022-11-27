@@ -65,7 +65,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.wheel_dist_artifact_name }}
-          path: dist/
+          path: dist/*.whl
 
 
   build-binary:
@@ -134,22 +134,23 @@ jobs:
     needs: [build-wheel]
     runs-on: ubuntu-latest
 
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          -
-            wheel_dist_artifact_name: wheel-dist-linux-amd64
-          -
-            wheel_dist_artifact_name: wheel-dist-windows-amd64
-          -
-            wheel_dist_artifact_name: wheel-dist-macos-amd64
-
     steps:
-      - name: Restore dist/ from Wheel artifact
+      - name: Restore dist/ from Wheel artifact wheel-dist-linux-amd64
         uses: actions/download-artifact@v3
         with:
-          name: ${{ matrix.wheel_dist_artifact_name }}
+          name: wheel-dist-linux-amd64
+          path: ./dist
+
+      - name: Restore dist/ from Wheel artifact wheel-dist-windows-amd64
+        uses: actions/download-artifact@v3
+        with:
+          name: wheel-dist-windows-amd64
+          path: ./dist
+
+      - name: Restore dist/ from Wheel artifact wheel-dist-macos-amd64
+        uses: actions/download-artifact@v3
+        with:
+          name: wheel-dist-macos-amd64
           path: ./dist
 
       - name: Upload Wheel to Release
@@ -157,7 +158,7 @@ jobs:
         with:
           tag_name: ${{ env.VERSION }}
           target_commitish: ${{ github.sha }}
-          files: dist/*
+          files: dist/*.whl
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
