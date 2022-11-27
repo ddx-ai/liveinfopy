@@ -1,0 +1,120 @@
+name: Release Python Package
+
+on:
+  release:
+    types:
+      - created
+
+env:
+  VERSION: ${{ github.event.release.tag_name != '' && github.event.release.tag_name || '0.0.0' }}
+
+jobs:
+  build-python-package:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          -
+            os: ubuntu-20.04
+            python_version: '3.8.14' # the latest version of 3.8.x
+            sed: 'sed'
+            setup_py_subcommand: sdist
+            dist_artifact_name: python-package-dist-sdist
+          -
+            os: ubuntu-20.04
+            python_version: '3.8.14' # the latest version of 3.8.x
+            sed: 'sed'
+            setup_py_subcommand: bdist_wheel
+            dist_artifact_name: python-package-dist-bdist_wheel-linux-amd64
+          -
+            os: windows-2019
+            python_version: '3.8.10' # the latest version of 3.8.x
+            sed: 'sed'
+            setup_py_subcommand: bdist_wheel
+            dist_artifact_name: python-package-dist-bdist_wheel-windows-amd64
+          -
+            os: macos-11
+            python_version: '3.8.14' # the latest version of 3.8.x
+            sed: 'gsed'
+            setup_py_subcommand: bdist_wheel
+            dist_artifact_name: python-package-dist-bdist_wheel-macos-amd64
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install gsed for macOS
+        if: startsWith(matrix.os, 'macos-')
+        shell: bash
+        run: brew install gnu-sed
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python_version }}
+          cache: 'pip'
+          cache-dependency-path: |
+            **/requirements-development.txt
+
+      - name: Install Dependencies
+        run: |
+            pip3 install -r requirements-development.txt
+            pip3 install wheel
+
+      - name: Replace version
+        shell: bash
+        run: |
+          "${{ matrix.sed }}" -i "s/__VERSION__ = '0.0.0'/__VERSION__ = '${{ env.VERSION }}'/" liveinfo/__init__.py
+
+      - name: Execute setup.py
+        run: python3 setup.py "${{ matrix.setup_py_subcommand }}"
+
+      - name: Upload dist/* to Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.dist_artifact_name }}
+          path: dist/*
+
+
+  upload-python-package:
+    needs: [build-python-package]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Restore dist/ from Wheel artifact python-package-dist-sdist
+        uses: actions/download-artifact@v3
+        with:
+          name: python-package-dist-sdist
+          path: ./dist
+
+      - name: Restore dist/ from Wheel artifact python-package-dist-bdist_wheel-linux-amd64
+        uses: actions/download-artifact@v3
+        with:
+          name: python-package-dist-bdist_wheel-linux-amd64
+          path: ./dist
+
+      - name: Restore dist/ from Wheel artifact python-package-dist-bdist_wheel-windows-amd64
+        uses: actions/download-artifact@v3
+        with:
+          name: python-package-dist-bdist_wheel-windows-amd64
+          path: ./dist
+
+      - name: Restore dist/ from Wheel artifact python-package-dist-bdist_wheel-macos-amd64
+        uses: actions/download-artifact@v3
+        with:
+          name: python-package-dist-bdist_wheel-macos-amd64
+          path: ./dist
+
+      - name: Upload Python Package to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.VERSION }}
+          target_commitish: ${{ github.sha }}
+          files: dist/*
+
+      - name: Publish Python Package to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
