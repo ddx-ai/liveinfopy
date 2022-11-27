@@ -44,10 +44,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install gsed, gtar for macOS
+      - name: Install gsed for macOS
         if: startsWith(matrix.os, 'macos-')
         shell: bash
-        run: brew install gnu-sed gnu-tar
+        run: brew install gnu-sed
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -116,7 +116,7 @@ jobs:
           mkdir "${ASSET_NAME_STEM}"
           mv "${{ matrix.binary_name }}" "${ASSET_NAME_STEM}/"
 
-          "${{ matrix.tar }}" czf "${{ matrix.asset_name }}" "${ASSET_NAME_STEM}/"
+          tar czf "${{ matrix.asset_name }}" "${ASSET_NAME_STEM}/"
 
       - name: Create release asset (.zip)
         if: endsWith(matrix.asset_name, '.zip')
