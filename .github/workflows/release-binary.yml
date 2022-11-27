@@ -105,35 +105,40 @@ jobs:
           name: ${{ matrix.dist_artifact_name }}
           path: ./dist
 
+      - name: Create release asset name
+        id: create-release-asset-name
+        shell: bash
+        run: |
+          ASSET_NAME="${{ matrix.asset_name }}"
+          ASSET_NAME_STEM="${ASSET_NAME%%.*}"
+          ASSET_NAME_EXTENSION="${ASSET_NAME#*.}"
+
+          echo "release_asset_name_stem=${ASSET_NAME_STEM}-${{ env.VERSION }}" >> $GITHUB_OUTPUT
+          echo "release_asset_name=${ASSET_NAME_STEM}-${{ env.VERSION }}.${ASSET_NAME_EXTENSION}" >> $GITHUB_OUTPUT
+
       - name: Create release asset (.tgz)
         if: endsWith(matrix.asset_name, '.tgz')
         shell: bash
         run: |
-          ASSET_NAME="${{ matrix.asset_name }}"
-          ASSET_NAME_STEM="${ASSET_NAME%.*}"
-
           cd dist
-          mkdir "${ASSET_NAME_STEM}"
-          mv "${{ matrix.binary_name }}" "${ASSET_NAME_STEM}/"
+          mkdir "${{ steps.create-release-asset-name.outputs.release_asset_name_stem }}"
+          mv "${{ matrix.binary_name }}" "${{ steps.create-release-asset-name.outputs.release_asset_name_stem }}/"
 
-          tar czf "${{ matrix.asset_name }}" "${ASSET_NAME_STEM}/"
+          tar czf "${{ steps.create-release-asset-name.outputs.release_asset_name }}" "${{ steps.create-release-asset-name.outputs.release_asset_name_stem }}/"
 
       - name: Create release asset (.zip)
         if: endsWith(matrix.asset_name, '.zip')
         shell: bash
         run: |
-          ASSET_NAME="${{ matrix.asset_name }}"
-          ASSET_NAME_STEM="${ASSET_NAME%.*}"
-
           cd dist
-          mkdir "${ASSET_NAME_STEM}"
-          mv "${{ matrix.binary_name }}" "${ASSET_NAME_STEM}/"
+          mkdir "${{ steps.create-release-asset-name.outputs.release_asset_name_stem }}"
+          mv "${{ matrix.binary_name }}" "${{ steps.create-release-asset-name.outputs.release_asset_name_stem }}/"
 
-          zip -r "${{ matrix.asset_name }}" "${ASSET_NAME_STEM}/"
+          zip -r "${{ steps.create-release-asset-name.outputs.release_asset_name }}" "${{ steps.create-release-asset-name.outputs.release_asset_name_stem }}/"
 
       - name: Upload Binary to Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ env.VERSION }}
           target_commitish: ${{ github.sha }}
-          files: dist/${{ matrix.asset_name }}
+          files: dist/${{ steps.create-release-asset-name.outputs.release_asset_name }}
