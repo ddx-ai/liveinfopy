@@ -39,7 +39,7 @@ jobs:
           check-latest: true
           cache: 'pip'
           cache-dependency-path: |
-            '**/requirements-development.txt'
+            './requirements-development.txt'
 
       - name: Install Dependencies
         run: |
