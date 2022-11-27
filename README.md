@@ -49,10 +49,30 @@ python3 main.py -s nicolive "ch1072"
 python3 main.py -s nicolive "ch2646073"
 ```
 
-## 既知のAPI
+## API研究
 
-現在このプログラムでは使用していませんが、以下のAPIが利用できる可能性があります。
+以下、未実装または実装予定のない内容が含まれます。
+
+### ニコニコ生放送 `live.nicovideo.jp`
 
 - `https://com.nicovideo.jp/api/v1/communities/{community_id}/lives/onair.json`
   - コミュニティで放送中の番組を返す（コミュニティ個別ページの放送Alert表示用）
   - `{community_id}`には、コミュニティID`co*`の数値部分（`*`）が入ります
+
+### ニコニコチャンネルプラス `nicochannel.jp`
+
+- `https://nfc-api.nicochannel.jp/fc/fanclub_sites/{fanclub_site_id}/live_pages?page={page}&live_type={live_type}&per_page={per_page}`
+  - `https://nicochannel.jp/{channel_slug}/lives`で表示される生放送番組一覧
+  - `live_type`
+    - `1`(CURRENT): 放送中
+    - `2`(SCHEDULED): 放送予定
+    - `3`(FINISHED): 過去の放送（すべて）
+    - `4`(ARCHIVED): 過去の放送（生放送アーカイブ）
+      - 「すべて」と「生放送アーカイブ」の違い: 調査中（字面から、アーカイブが残っていない放送と残っている放送の区別？）
+  - `page`
+    - `1`始まり
+  - `per_page`
+    - 初期値 `live_type=1`: `10`
+    - 初期値 `live_type=2`: `6`
+    - 初期値 `live_type=3`: `8`
+    - 初期値 `live_type=4`: `8`
