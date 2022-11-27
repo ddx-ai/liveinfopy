@@ -11,9 +11,11 @@ def main():
   live_id_or_url = args.live_id_or_url
   service = args.service
 
-  live_info_api_client.get_live_program(
-    live_id_or_url=live_id_or_url,
-    service=service,
+  print(
+    live_info_api_client.get_live_program(
+      live_id_or_url=live_id_or_url,
+      service=service,
+    )
   )
 
 

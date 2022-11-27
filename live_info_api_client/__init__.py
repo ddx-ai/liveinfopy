@@ -46,7 +46,7 @@ def get_live_program(
   live_id_or_url: str,
   service: Optional[str],
   useragent: str = default_useragent,
-):
+) -> nicolive.GetNicoliveProgramNicoliveProgramData:
   if service is None:
     service = guess_service(live_id_or_url=live_id_or_url)
 
@@ -65,7 +65,7 @@ def get_live_program(
 
     if nicolive_program_result.result_type == 'success':
       if nicolive_program_result.data_type == 'nicolive_program':
-        print(nicolive_program_result.data)
+        return nicolive_program_result.data
       else:
         raise GetLiveProgramError(nicolive_program_result)
     else:
