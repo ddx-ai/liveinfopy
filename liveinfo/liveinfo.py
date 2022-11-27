@@ -3,7 +3,7 @@ from typing import Optional, Literal
 
 from . import __VERSION__
 from . import nicolive
-
+from . import ytlive
 
 """
   Public APIs
@@ -25,6 +25,7 @@ class GetLiveProgramError(Exception):
 def get_live_program(
   live_id_or_url: str,
   service: Optional[str],
+  ytlive_api_key: Optional[str],
   useragent: str = default_useragent,
 ) -> nicolive.GetNicoliveProgramNicoliveProgramData:
   if service is None:
@@ -50,6 +51,19 @@ def get_live_program(
         raise GetLiveProgramError(nicolive_program_result)
     else:
       raise GetLiveProgramError(nicolive_program_result)
+
+  elif service == 'ytlive':
+    assert ytlive_api_key is not None, 'ytlive_api_key is required'
+
+    print(
+      ytlive.get_ytlive_programs(
+        channel_id=live_id_or_url,
+        useragent=useragent,
+        api_key=ytlive_api_key,
+      )
+    )
+    raise GetLiveProgramError(f'Unsupported service: {service}')
+
   else:
     raise GetLiveProgramError(f'Unknown service: {service}')
 
