@@ -16,13 +16,11 @@ setup(
   packages=find_packages(),
   include_package_data=True,
 
-  # entry_points = {
-  #   'console_scripts': [
-  #     # create `main` function in
-  #     #   liveinfo/hoge.py
-  #     'hoge = aoirint_liveinfo.hoge:main',
-  #   ],
-  # },
+  entry_points={
+    'console_scripts': [
+      'liveinfo = liveinfo.cli:cli',
+    ],
+  },
 
   install_requires=(
     Path('requirements.in').read_text(encoding='utf-8').splitlines()
