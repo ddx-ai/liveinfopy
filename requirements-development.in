@@ -1,6 +1,7 @@
 # Development dependencies
 -r requirements.in
 mypy
-pytest
 types-requests
 types-beautifulsoup4
+pytest
+flake8
