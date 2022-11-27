@@ -9,30 +9,92 @@ env:
   VERSION: ${{ github.event.release.tag_name != '' && github.event.release.tag_name || '0.0.0' }}
 
 jobs:
-  release:
+  build-wheel:
     strategy:
       fail-fast: false
       matrix:
         include:
-          - 
+          -
+            os: ubuntu-20.04
+            python_version: '3.8.14' # the latest version of 3.8.x
+            sed: 'sed'
+            wheel_dist_artifact_name: wheel-dist-linux-amd64
+          -
+            os: windows-2019
+            python_version: '3.8.10' # the latest version of 3.8.x
+            sed: 'sed'
+            wheel_dist_artifact_name: wheel-dist-windows-amd64
+          -
+            os: macos-11
+            python_version: '3.8.14' # the latest version of 3.8.x
+            sed: 'gsed'
+            wheel_dist_artifact_name: wheel-dist-macos-amd64
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install gsed for macOS
+        if: startsWith(matrix.os, 'macos-')
+        shell: bash
+        run: brew install gnu-sed
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python_version }}
+          cache: 'pip'
+          cache-dependency-path: |
+            **/requirements-development.txt
+
+      - name: Install Dependencies
+        run: |
+            pip3 install -r requirements-development.txt
+            pip3 install wheel
+
+      - name: Replace version
+        shell: bash
+        run: |
+          "${{ matrix.sed }}" -i "s/__VERSION__ = '0.0.0'/__VERSION__ = '${{ env.VERSION }}'/" liveinfo/__init__.py
+
+      - name: Build Wheel
+        run: python3 setup.py sdist bdist_wheel
+
+      - name: Upload Wheel dist/ to Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.wheel_dist_artifact_name }}
+          path: dist/
+
+
+  build-binary:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          -
             os: ubuntu-20.04
             python_version: '3.8.14' # the latest version of 3.8.x
             sed: 'sed'
             tar: 'tar'
+            binary_dist_artifact_name: binary-dist-linux-amd64
             binary_name: liveinfo
             asset_name: liveinfo-linux-amd64.tgz
-          - 
+          -
             os: windows-2019
             python_version: '3.8.10' # the latest version of 3.8.x
             sed: 'sed'
             tar: 'tar'
+            binary_dist_artifact_name: binary-dist-windows-amd64
             binary_name: liveinfo.exe
             asset_name: liveinfo-windows-amd64.zip
-          - 
+          -
             os: macos-11
             python_version: '3.8.14' # the latest version of 3.8.x
             sed: 'gsed'
             tar: 'gtar'
+            binary_dist_artifact_name: binary-dist-macos-amd64
             binary_name: liveinfo
             asset_name: liveinfo-macos-amd64.tgz
 
@@ -64,8 +126,38 @@ jobs:
         run: |
           "${{ matrix.sed }}" -i "s/__VERSION__ = '0.0.0'/__VERSION__ = '${{ env.VERSION }}'/" liveinfo/__init__.py
 
-      - name: Build Package
-        run: python3 setup.py sdist bdist_wheel
+      - name: Build Binary
+        run: pyinstaller --name liveinfo --onefile main.py
+
+
+  upload-wheel:
+    needs: [build-wheel]
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          -
+            wheel_dist_artifact_name: wheel-dist-linux-amd64
+          -
+            wheel_dist_artifact_name: wheel-dist-windows-amd64
+          -
+            wheel_dist_artifact_name: wheel-dist-macos-amd64
+
+    steps:
+      - name: Restore dist/ from Wheel artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ matrix.wheel_dist_artifact_name }}
+          path: ./dist
+
+      - name: Upload Wheel to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.VERSION }}
+          target_commitish: ${{ github.sha }}
+          files: dist/*
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
@@ -73,16 +165,34 @@ jobs:
           user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}
 
-      - name: Upload Wheel to Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ env.VERSION }}
-          target_commitish: ${{ github.sha }}
-          files: |-
-            dist/*.whl
 
-      - name: Build Binary
-        run: pyinstaller --name liveinfo --onefile main.py
+  upload-binary:
+    needs: [build-binary]
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          -
+            binary_dist_artifact_name: binary-dist-linux-amd64
+            binary_name: liveinfo
+            asset_name: liveinfo-linux-amd64.tgz
+          -
+            binary_dist_artifact_name: binary-dist-windows-amd64
+            binary_name: liveinfo.exe
+            asset_name: liveinfo-windows-amd64.zip
+          -
+            binary_dist_artifact_name: binary-dist-macos-amd64
+            binary_name: liveinfo
+            asset_name: liveinfo-macos-amd64.tgz
+
+    steps:
+      - name: Restore dist/ from Binary artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ matrix.binary_dist_artifact_name }}
+          path: ./dist
 
       - name: Create release asset (.tgz)
         if: endsWith(matrix.asset_name, '.tgz')
