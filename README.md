@@ -78,7 +78,7 @@ CLIでは、APIキーは、引数の値・引数の値で指定されたファ�
 引数にはチャンネルID（URL・ハンドル名は使用不可）を渡してください。
 
 ```shell
-liveinfo -s ytlive "UC7OazbQ3Eo9vrkcReXGIZkQ"
+liveinfo -s ytlive --ytlive_api_key_file /secrets/ytlive_api_key "UC7OazbQ3Eo9vrkcReXGIZkQ"
 ```
 
 現在の仕様
