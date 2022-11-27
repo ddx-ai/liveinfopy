@@ -18,26 +18,7 @@ jobs:
             os: ubuntu-20.04
             python_version: '3.8.14' # the latest version of 3.8.x
             sed: 'sed'
-            setup_py_subcommand: sdist
-            dist_artifact_name: python-package-dist-sdist
-          -
-            os: ubuntu-20.04
-            python_version: '3.8.14' # the latest version of 3.8.x
-            sed: 'sed'
-            setup_py_subcommand: bdist_wheel
-            dist_artifact_name: python-package-dist-bdist_wheel-linux-amd64
-          -
-            os: windows-2019
-            python_version: '3.8.10' # the latest version of 3.8.x
-            sed: 'sed'
-            setup_py_subcommand: bdist_wheel
-            dist_artifact_name: python-package-dist-bdist_wheel-windows-amd64
-          -
-            os: macos-11
-            python_version: '3.8.14' # the latest version of 3.8.x
-            sed: 'gsed'
-            setup_py_subcommand: bdist_wheel
-            dist_artifact_name: python-package-dist-bdist_wheel-macos-amd64
+            dist_artifact_name: python-package-dist
 
     runs-on: ${{ matrix.os }}
 
@@ -68,7 +49,7 @@ jobs:
           "${{ matrix.sed }}" -i "s/__VERSION__ = '0.0.0'/__VERSION__ = '${{ env.VERSION }}'/" liveinfo/__init__.py
 
       - name: Execute setup.py
-        run: python3 setup.py "${{ matrix.setup_py_subcommand }}"
+        run: python3 setup.py sdist bdist_wheel
 
       - name: Upload dist/* to Artifact
         uses: actions/upload-artifact@v3
@@ -82,28 +63,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Restore dist/ from Python Package artifact python-package-dist-sdist
+      - name: Restore dist/ from Python Package artifact python-package-dist
         uses: actions/download-artifact@v3
         with:
-          name: python-package-dist-sdist
-          path: ./dist
-
-      - name: Restore dist/ from Python Package artifact python-package-dist-bdist_wheel-linux-amd64
-        uses: actions/download-artifact@v3
-        with:
-          name: python-package-dist-bdist_wheel-linux-amd64
-          path: ./dist
-
-      - name: Restore dist/ from Python Package artifact python-package-dist-bdist_wheel-windows-amd64
-        uses: actions/download-artifact@v3
-        with:
-          name: python-package-dist-bdist_wheel-windows-amd64
-          path: ./dist
-
-      - name: Restore dist/ from Python Package artifact python-package-dist-bdist_wheel-macos-amd64
-        uses: actions/download-artifact@v3
-        with:
-          name: python-package-dist-bdist_wheel-macos-amd64
+          name: python-package-dist
           path: ./dist
 
       - name: Upload Python Package to Release
