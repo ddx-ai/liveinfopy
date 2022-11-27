@@ -36,16 +36,16 @@ If you are using pyenv, see [pyenv and PyInstaller](https://pyinstaller.org/en/s
 
 ```shell
 # 番組 （ 月刊ニコニコインフォチャンネル https://live.nicovideo.jp/watch/lv339313375 ）
-python3 main.py -s nicolive "lv339313375"
+liveinfo -s nicolive "lv339313375"
 
 # コミュニティ （ ニコニコ動画プレミアムアワード https://com.nicovideo.jp/community/co5683564 ）
-python3 main.py -s nicolive "co5683564"
+liveinfo -s nicolive "co5683564"
 
 # ユーザー （ ニコニコプレミアムDAY https://www.nicovideo.jp/user/123430062 ）
-python3 main.py -s nicolive "user/123430062"
+liveinfo -s nicolive "user/123430062"
 
 # ニコニコチャンネル （ウェザーニュースチャンネル https://ch.nicovideo.jp/weathernews ）
-python3 main.py -s nicolive "ch1072"
+liveinfo -s nicolive "ch1072"
 ```
 
 #### 期待される挙動と既知の問題
@@ -65,8 +65,9 @@ python3 main.py -s nicolive "ch1072"
 # Return not_found (at least not-onair status)
 
 # ニコニコチャンネル （月刊ニコニコインフォチャンネル https://ch.nicovideo.jp/weekly-niconico-info ）
-python3 main.py -s nicolive "ch2646073"
+liveinfo -s nicolive "ch2646073"
 ```
+
 
 ## Development
 
@@ -75,8 +76,9 @@ flake8
 
 mypy .
 
-# pytest tests/
+pytest tests/
 ```
+
 
 ## API研究
 
