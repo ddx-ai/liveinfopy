@@ -34,7 +34,7 @@ setup(
   url='https://github.com/aoirint/live_info_api_client_py',
   # description='SHORT_DESCRIPTION',
 
-  long_description=open('README.md', 'r').read(),
+  long_description=Path('README.md').read_text(encoding='utf-8'),
   long_description_content_type='text/markdown',
 
   classifiers=[
