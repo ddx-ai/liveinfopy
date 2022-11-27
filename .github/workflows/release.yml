@@ -19,21 +19,21 @@ jobs:
             python_version: '3.8.14' # the latest version of 3.8.x
             sed: 'sed'
             tar: 'tar'
-            artifact_name: liveinfo
+            binary_name: liveinfo
             asset_name: liveinfo-linux-amd64.tgz
           - 
             os: windows-2019
             python_version: '3.8.10' # the latest version of 3.8.x
             sed: 'sed'
             tar: 'tar'
-            artifact_name: liveinfo.exe
+            binary_name: liveinfo.exe
             asset_name: liveinfo-windows-amd64.zip
           - 
             os: macos-11
             python_version: '3.8.14' # the latest version of 3.8.x
             sed: 'gsed'
             tar: 'gtar'
-            artifact_name: liveinfo
+            binary_name: liveinfo
             asset_name: liveinfo-macos-amd64.tgz
 
     runs-on: ${{ matrix.os }}
@@ -93,7 +93,7 @@ jobs:
 
           cd dist
           mkdir "${ASSET_NAME_STEM}"
-          mv "${{ matrix.artifact_name }}" "${ASSET_NAME_STEM}/"
+          mv "${{ matrix.binary_name }}" "${ASSET_NAME_STEM}/"
 
           "${{ matrix.tar }}" czf "${{ matrix.asset_name }}" "${ASSET_NAME_STEM}/"
 
@@ -106,7 +106,7 @@ jobs:
 
           cd dist
           mkdir "${ASSET_NAME_STEM}"
-          mv "${{ matrix.artifact_name }}" "${ASSET_NAME_STEM}/"
+          mv "${{ matrix.binary_name }}" "${ASSET_NAME_STEM}/"
 
           zip -r "${{ matrix.asset_name }}" "${ASSET_NAME_STEM}/"
 
