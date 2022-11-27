@@ -19,7 +19,7 @@ jobs:
             python_version: '3.8.14' # the latest version of 3.8.x
             sed: 'sed'
             tar: 'tar'
-            binary_dist_artifact_name: binary-dist-linux-amd64
+            dist_artifact_name: binary-dist-linux-amd64
             binary_name: liveinfo
             asset_name: liveinfo-linux-amd64.tgz
           -
@@ -27,7 +27,7 @@ jobs:
             python_version: '3.8.10' # the latest version of 3.8.x
             sed: 'sed'
             tar: 'tar'
-            binary_dist_artifact_name: binary-dist-windows-amd64
+            dist_artifact_name: binary-dist-windows-amd64
             binary_name: liveinfo.exe
             asset_name: liveinfo-windows-amd64.zip
           -
@@ -35,7 +35,7 @@ jobs:
             python_version: '3.8.14' # the latest version of 3.8.x
             sed: 'gsed'
             tar: 'gtar'
-            binary_dist_artifact_name: binary-dist-macos-amd64
+            dist_artifact_name: binary-dist-macos-amd64
             binary_name: liveinfo
             asset_name: liveinfo-macos-amd64.tgz
 
@@ -70,6 +70,12 @@ jobs:
       - name: Build Binary
         run: pyinstaller --name liveinfo --onefile main.py
 
+      - name: Upload dist/* to Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.dist_artifact_name }}
+          path: dist/*
+
 
   upload-binary:
     needs: [build-binary]
@@ -80,15 +86,15 @@ jobs:
       matrix:
         include:
           -
-            binary_dist_artifact_name: binary-dist-linux-amd64
+            dist_artifact_name: binary-dist-linux-amd64
             binary_name: liveinfo
             asset_name: liveinfo-linux-amd64.tgz
           -
-            binary_dist_artifact_name: binary-dist-windows-amd64
+            dist_artifact_name: binary-dist-windows-amd64
             binary_name: liveinfo.exe
             asset_name: liveinfo-windows-amd64.zip
           -
-            binary_dist_artifact_name: binary-dist-macos-amd64
+            dist_artifact_name: binary-dist-macos-amd64
             binary_name: liveinfo
             asset_name: liveinfo-macos-amd64.tgz
 
@@ -96,7 +102,7 @@ jobs:
       - name: Restore dist/ from Binary artifact
         uses: actions/download-artifact@v3
         with:
-          name: ${{ matrix.binary_dist_artifact_name }}
+          name: ${{ matrix.dist_artifact_name }}
           path: ./dist
 
       - name: Create release asset (.tgz)
