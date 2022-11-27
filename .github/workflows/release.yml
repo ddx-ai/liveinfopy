@@ -68,3 +68,11 @@ jobs:
       - name: Build Binary
         run: |
           pyinstaller --name liveinfo --onefile main.py
+
+      - name: Upload Binary to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.VERSION }}
+          target_commitish: ${{ github.sha }}
+          files: |-
+            dist/*
