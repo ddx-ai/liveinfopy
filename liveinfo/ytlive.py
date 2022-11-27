@@ -9,29 +9,29 @@ from dataclasses import dataclass
 
 
 @dataclass
-class GetYtliveProgramsSuccessYtliveProgramDataItemThumbnail:
+class GetYtliveProgramsSuccessYtliveProgramsDataItemThumbnail:
   url: str
   width: int
   height: int
 
 
 @dataclass
-class GetYtliveProgramsSuccessYtliveProgramDataItemThumbnails:
-  default: Optional[GetYtliveProgramsSuccessYtliveProgramDataItemThumbnail]
-  medium: Optional[GetYtliveProgramsSuccessYtliveProgramDataItemThumbnail]
-  high: Optional[GetYtliveProgramsSuccessYtliveProgramDataItemThumbnail]
-  standard: Optional[GetYtliveProgramsSuccessYtliveProgramDataItemThumbnail]
-  maxres: Optional[GetYtliveProgramsSuccessYtliveProgramDataItemThumbnail]
+class GetYtliveProgramsSuccessYtliveProgramsDataItemThumbnails:
+  default: Optional[GetYtliveProgramsSuccessYtliveProgramsDataItemThumbnail]
+  medium: Optional[GetYtliveProgramsSuccessYtliveProgramsDataItemThumbnail]
+  high: Optional[GetYtliveProgramsSuccessYtliveProgramsDataItemThumbnail]
+  standard: Optional[GetYtliveProgramsSuccessYtliveProgramsDataItemThumbnail]
+  maxres: Optional[GetYtliveProgramsSuccessYtliveProgramsDataItemThumbnail]
 
 
 @dataclass
-class GetYtliveProgramsSuccessYtliveProgramDataItemStatus:
+class GetYtliveProgramsSuccessYtliveProgramsDataItemStatus:
   upload_status: Union[Literal['processed', 'uploaded'], str]
   privacy_status: Union[Literal['public'], str]
 
 
 @dataclass
-class GetYtliveProgramsSuccessYtliveProgramDataItemLiveStreamingDetails:
+class GetYtliveProgramsSuccessYtliveProgramsDataItemLiveStreamingDetails:
   actual_start_time: Optional[str]
   actual_end_time: Optional[str]
   scheduled_start_time: Optional[str]
@@ -40,29 +40,29 @@ class GetYtliveProgramsSuccessYtliveProgramDataItemLiveStreamingDetails:
 
 
 @dataclass
-class GetYtliveProgramsSuccessYtliveProgramDataItem:
+class GetYtliveProgramsSuccessYtliveProgramsDataItem:
   channel_id: str
   channel_title: str
   video_id: str
   title: str
   description: str
   live_broadcast_content: str
-  status: GetYtliveProgramsSuccessYtliveProgramDataItemStatus
-  thumbnails: GetYtliveProgramsSuccessYtliveProgramDataItemThumbnails
+  status: GetYtliveProgramsSuccessYtliveProgramsDataItemStatus
+  thumbnails: GetYtliveProgramsSuccessYtliveProgramsDataItemThumbnails
   live_streaming_details: \
-    GetYtliveProgramsSuccessYtliveProgramDataItemLiveStreamingDetails
+    GetYtliveProgramsSuccessYtliveProgramsDataItemLiveStreamingDetails
 
 
 @dataclass
-class GetYtliveProgramsSuccessYtliveProgramData:
-  items: List[GetYtliveProgramsSuccessYtliveProgramDataItem]
+class GetYtliveProgramsSuccessYtliveProgramsData:
+  items: List[GetYtliveProgramsSuccessYtliveProgramsDataItem]
 
 
 @dataclass
-class GetYtliveProgramsSuccessYtliveProgramResult:
+class GetYtliveProgramsSuccessYtliveProgramsResult:
   result_type: Literal['success']
   data_type: Literal['ytlive_programs']
-  data: GetYtliveProgramsSuccessYtliveProgramData
+  data: GetYtliveProgramsSuccessYtliveProgramsData
 
 
 @dataclass
@@ -86,7 +86,7 @@ class GetYtliveProgramsUnknownErrorResult:
 
 
 GetYtliveProgramsResult = Union[
-  GetYtliveProgramsSuccessYtliveProgramResult,
+  GetYtliveProgramsSuccessYtliveProgramsResult,
   GetYtliveProgramsBadRequestResult,
   GetYtliveProgramsForbiddenResult,
   GetYtliveProgramsMaintenanceResult,
@@ -125,13 +125,13 @@ def get_ytlive_programs(
         if videos_list_result.data_type == 'ytlive_programs':
           videos_list_items = videos_list_result.data.items
 
-          items: List[GetYtliveProgramsSuccessYtliveProgramDataItem] = []
+          items: List[GetYtliveProgramsSuccessYtliveProgramsDataItem] = []
           for videos_list_item in videos_list_items:
             if videos_list_item.status.privacy_status != 'public':
               continue  # drop not-public (private and unlisted) videos
 
             live_streaming_details = (
-              GetYtliveProgramsSuccessYtliveProgramDataItemLiveStreamingDetails(  # noqa: E501
+              GetYtliveProgramsSuccessYtliveProgramsDataItemLiveStreamingDetails(  # noqa: E501
                 actual_start_time=(
                   videos_list_item.live_streaming_details.actual_start_time
                 ),
@@ -151,21 +151,21 @@ def get_ytlive_programs(
             )
 
             items.append(
-              GetYtliveProgramsSuccessYtliveProgramDataItem(
+              GetYtliveProgramsSuccessYtliveProgramsDataItem(
                 channel_id=videos_list_item.channel_id,
                 channel_title=videos_list_item.channel_title,
                 video_id=videos_list_item.video_id,
                 title=videos_list_item.title,
                 description=videos_list_item.description,
                 live_broadcast_content=videos_list_item.live_broadcast_content,
-                status=GetYtliveProgramsSuccessYtliveProgramDataItemStatus(
+                status=GetYtliveProgramsSuccessYtliveProgramsDataItemStatus(
                   upload_status=videos_list_item.status.upload_status,
                   privacy_status=videos_list_item.status.privacy_status,
                 ),
                 thumbnails=(
-                  GetYtliveProgramsSuccessYtliveProgramDataItemThumbnails(
+                  GetYtliveProgramsSuccessYtliveProgramsDataItemThumbnails(
                     default=(
-                      GetYtliveProgramsSuccessYtliveProgramDataItemThumbnail(
+                      GetYtliveProgramsSuccessYtliveProgramsDataItemThumbnail(
                         url=videos_list_item.thumbnails.default.url,
                         width=videos_list_item.thumbnails.default.width,
                         height=videos_list_item.thumbnails.default.height,
@@ -174,7 +174,7 @@ def get_ytlive_programs(
                       else None
                     ),
                     medium=(
-                      GetYtliveProgramsSuccessYtliveProgramDataItemThumbnail(
+                      GetYtliveProgramsSuccessYtliveProgramsDataItemThumbnail(
                         url=videos_list_item.thumbnails.medium.url,
                         width=videos_list_item.thumbnails.medium.width,
                         height=videos_list_item.thumbnails.medium.height,
@@ -183,7 +183,7 @@ def get_ytlive_programs(
                       else None
                     ),
                     high=(
-                      GetYtliveProgramsSuccessYtliveProgramDataItemThumbnail(
+                      GetYtliveProgramsSuccessYtliveProgramsDataItemThumbnail(
                         url=videos_list_item.thumbnails.high.url,
                         width=videos_list_item.thumbnails.high.width,
                         height=videos_list_item.thumbnails.high.height,
@@ -192,7 +192,7 @@ def get_ytlive_programs(
                       else None
                     ),
                     standard=(
-                      GetYtliveProgramsSuccessYtliveProgramDataItemThumbnail(
+                      GetYtliveProgramsSuccessYtliveProgramsDataItemThumbnail(
                         url=videos_list_item.thumbnails.standard.url,
                         width=videos_list_item.thumbnails.standard.width,
                         height=videos_list_item.thumbnails.standard.height,
@@ -201,7 +201,7 @@ def get_ytlive_programs(
                       else None
                     ),
                     maxres=(
-                      GetYtliveProgramsSuccessYtliveProgramDataItemThumbnail(
+                      GetYtliveProgramsSuccessYtliveProgramsDataItemThumbnail(
                         url=videos_list_item.thumbnails.maxres.url,
                         width=videos_list_item.thumbnails.maxres.width,
                         height=videos_list_item.thumbnails.maxres.height,
@@ -215,10 +215,10 @@ def get_ytlive_programs(
               )
             )
 
-          return GetYtliveProgramsSuccessYtliveProgramResult(
+          return GetYtliveProgramsSuccessYtliveProgramsResult(
             result_type='success',
             data_type='ytlive_programs',
-            data=GetYtliveProgramsSuccessYtliveProgramData(
+            data=GetYtliveProgramsSuccessYtliveProgramsData(
               items=items,
             ),
           )
@@ -249,40 +249,40 @@ def get_ytlive_programs(
 
 
 @dataclass
-class GetYtliveSearchListSuccessYtliveProgramDataItemThumbnail:
+class GetYtliveSearchListSuccessYtliveProgramsDataItemThumbnail:
   url: str
   width: int
   height: int
 
 
 @dataclass
-class GetYtliveSearchListSuccessYtliveProgramDataItemThumbnails:
-  default: Optional[GetYtliveSearchListSuccessYtliveProgramDataItemThumbnail]
-  medium: Optional[GetYtliveSearchListSuccessYtliveProgramDataItemThumbnail]
-  high: Optional[GetYtliveSearchListSuccessYtliveProgramDataItemThumbnail]
+class GetYtliveSearchListSuccessYtliveProgramsDataItemThumbnails:
+  default: Optional[GetYtliveSearchListSuccessYtliveProgramsDataItemThumbnail]
+  medium: Optional[GetYtliveSearchListSuccessYtliveProgramsDataItemThumbnail]
+  high: Optional[GetYtliveSearchListSuccessYtliveProgramsDataItemThumbnail]
 
 
 @dataclass
-class GetYtliveSearchListSuccessYtliveProgramDataItem:
+class GetYtliveSearchListSuccessYtliveProgramsDataItem:
   channel_id: str
   channel_title: str
   video_id: str
   title: str
   description: str
   live_broadcast_content: str
-  thumbnails: GetYtliveSearchListSuccessYtliveProgramDataItemThumbnails
+  thumbnails: GetYtliveSearchListSuccessYtliveProgramsDataItemThumbnails
 
 
 @dataclass
-class GetYtliveSearchListSuccessYtliveProgramData:
-  items: List[GetYtliveSearchListSuccessYtliveProgramDataItem]
+class GetYtliveSearchListSuccessYtliveProgramsData:
+  items: List[GetYtliveSearchListSuccessYtliveProgramsDataItem]
 
 
 @dataclass
-class GetYtliveSearchListSuccessYtliveProgramResult:
+class GetYtliveSearchListSuccessYtliveProgramsResult:
   result_type: Literal['success']
   data_type: Literal['ytlive_programs']
-  data: GetYtliveSearchListSuccessYtliveProgramData
+  data: GetYtliveSearchListSuccessYtliveProgramsData
 
 
 @dataclass
@@ -306,7 +306,7 @@ class GetYtliveSearchListUnknownErrorResult:
 
 
 GetYtliveSearchListResult = Union[
-  GetYtliveSearchListSuccessYtliveProgramResult,
+  GetYtliveSearchListSuccessYtliveProgramsResult,
   GetYtliveSearchListBadRequestResult,
   GetYtliveSearchListForbiddenResult,
   GetYtliveSearchListMaintenanceResult,
@@ -342,7 +342,7 @@ def get_ytlive_search_list_video(
     search_response = search_res.json()
     search_response_items = search_response.get('items', [])
 
-    items: List[GetYtliveSearchListSuccessYtliveProgramDataItem] = []
+    items: List[GetYtliveSearchListSuccessYtliveProgramsDataItem] = []
     for response_item in search_response_items:
       id = response_item['id']
       video_id = id['videoId']
@@ -356,25 +356,25 @@ def get_ytlive_search_list_video(
       thumbnail_medium = thumbnails.get('medium')
       thumbnail_high = thumbnails.get('high')
 
-      items.append(GetYtliveSearchListSuccessYtliveProgramDataItem(
+      items.append(GetYtliveSearchListSuccessYtliveProgramsDataItem(
         channel_id=snippet_channel_id,
         channel_title=snippet_channel_title,
         video_id=video_id,
         title=snippet['title'],
         description=snippet['description'],
         live_broadcast_content=snippet['liveBroadcastContent'],
-        thumbnails=GetYtliveSearchListSuccessYtliveProgramDataItemThumbnails(
-          default=GetYtliveSearchListSuccessYtliveProgramDataItemThumbnail(
+        thumbnails=GetYtliveSearchListSuccessYtliveProgramsDataItemThumbnails(
+          default=GetYtliveSearchListSuccessYtliveProgramsDataItemThumbnail(
             url=thumbnail_default['url'],
             width=thumbnail_default['width'],
             height=thumbnail_default['height'],
           ) if thumbnail_default is not None else None,
-          medium=GetYtliveSearchListSuccessYtliveProgramDataItemThumbnail(
+          medium=GetYtliveSearchListSuccessYtliveProgramsDataItemThumbnail(
             url=thumbnail_medium['url'],
             width=thumbnail_medium['width'],
             height=thumbnail_medium['height'],
           ) if thumbnail_medium is not None else None,
-          high=GetYtliveSearchListSuccessYtliveProgramDataItemThumbnail(
+          high=GetYtliveSearchListSuccessYtliveProgramsDataItemThumbnail(
             url=thumbnail_high['url'],
             width=thumbnail_high['width'],
             height=thumbnail_high['height'],
@@ -382,10 +382,10 @@ def get_ytlive_search_list_video(
         ),
       ))
 
-    return GetYtliveSearchListSuccessYtliveProgramResult(
+    return GetYtliveSearchListSuccessYtliveProgramsResult(
       result_type='success',
       data_type='ytlive_programs',
-      data=GetYtliveSearchListSuccessYtliveProgramData(
+      data=GetYtliveSearchListSuccessYtliveProgramsData(
         items=items,
       )
     )
@@ -416,29 +416,29 @@ def get_ytlive_search_list_video(
 
 
 @dataclass
-class GetYtliveVideosListSuccessYtliveProgramDataItemThumbnail:
+class GetYtliveVideosListSuccessYtliveProgramsDataItemThumbnail:
   url: str
   width: int
   height: int
 
 
 @dataclass
-class GetYtliveVideosListSuccessYtliveProgramDataItemThumbnails:
-  default: Optional[GetYtliveVideosListSuccessYtliveProgramDataItemThumbnail]
-  medium: Optional[GetYtliveVideosListSuccessYtliveProgramDataItemThumbnail]
-  high: Optional[GetYtliveVideosListSuccessYtliveProgramDataItemThumbnail]
-  standard: Optional[GetYtliveVideosListSuccessYtliveProgramDataItemThumbnail]
-  maxres: Optional[GetYtliveVideosListSuccessYtliveProgramDataItemThumbnail]
+class GetYtliveVideosListSuccessYtliveProgramsDataItemThumbnails:
+  default: Optional[GetYtliveVideosListSuccessYtliveProgramsDataItemThumbnail]
+  medium: Optional[GetYtliveVideosListSuccessYtliveProgramsDataItemThumbnail]
+  high: Optional[GetYtliveVideosListSuccessYtliveProgramsDataItemThumbnail]
+  standard: Optional[GetYtliveVideosListSuccessYtliveProgramsDataItemThumbnail]
+  maxres: Optional[GetYtliveVideosListSuccessYtliveProgramsDataItemThumbnail]
 
 
 @dataclass
-class GetYtliveVideosListSuccessYtliveProgramDataItemStatus:
+class GetYtliveVideosListSuccessYtliveProgramsDataItemStatus:
   upload_status: Union[Literal['processed', 'uploaded'], str]
   privacy_status: Union[Literal['private', 'public', 'unlisted'], str]
 
 
 @dataclass
-class GetYtliveVideosListSuccessYtliveProgramDataItemLiveStreamingDetails:
+class GetYtliveVideosListSuccessYtliveProgramsDataItemLiveStreamingDetails:
   actual_start_time: Optional[str]
   actual_end_time: Optional[str]
   scheduled_start_time: Optional[str]
@@ -447,29 +447,29 @@ class GetYtliveVideosListSuccessYtliveProgramDataItemLiveStreamingDetails:
 
 
 @dataclass
-class GetYtliveVideosListSuccessYtliveProgramDataItem:
+class GetYtliveVideosListSuccessYtliveProgramsDataItem:
   channel_id: str
   channel_title: str
   video_id: str
   title: str
   description: str
   live_broadcast_content: str
-  status: GetYtliveVideosListSuccessYtliveProgramDataItemStatus
-  thumbnails: GetYtliveVideosListSuccessYtliveProgramDataItemThumbnails
+  status: GetYtliveVideosListSuccessYtliveProgramsDataItemStatus
+  thumbnails: GetYtliveVideosListSuccessYtliveProgramsDataItemThumbnails
   live_streaming_details: \
-    GetYtliveVideosListSuccessYtliveProgramDataItemLiveStreamingDetails
+    GetYtliveVideosListSuccessYtliveProgramsDataItemLiveStreamingDetails
 
 
 @dataclass
-class GetYtliveVideosListSuccessYtliveProgramData:
-  items: List[GetYtliveVideosListSuccessYtliveProgramDataItem]
+class GetYtliveVideosListSuccessYtliveProgramsData:
+  items: List[GetYtliveVideosListSuccessYtliveProgramsDataItem]
 
 
 @dataclass
-class GetYtliveVideosListSuccessYtliveProgramResult:
+class GetYtliveVideosListSuccessYtliveProgramsResult:
   result_type: Literal['success']
   data_type: Literal['ytlive_programs']
-  data: GetYtliveVideosListSuccessYtliveProgramData
+  data: GetYtliveVideosListSuccessYtliveProgramsData
 
 
 @dataclass
@@ -493,7 +493,7 @@ class GetYtliveVideosListUnknownErrorResult:
 
 
 GetYtliveVideosListResult = Union[
-  GetYtliveVideosListSuccessYtliveProgramResult,
+  GetYtliveVideosListSuccessYtliveProgramsResult,
   GetYtliveVideosListBadRequestResult,
   GetYtliveVideosListForbiddenResult,
   GetYtliveVideosListMaintenanceResult,
@@ -524,7 +524,7 @@ def get_ytlive_videos_list(
     videos_response = videos_res.json()
     videos_response_items = videos_response.get('items', [])
 
-    items: List[GetYtliveVideosListSuccessYtliveProgramDataItem] = []
+    items: List[GetYtliveVideosListSuccessYtliveProgramsDataItem] = []
     for response_item in videos_response_items:
       video_id = response_item['id']
 
@@ -553,46 +553,46 @@ def get_ytlive_videos_list(
       scheduled_end_time = live_streaming_details.get('scheduledEndTime')
       concurrent_viewers = live_streaming_details.get('concurrentViewers')
 
-      items.append(GetYtliveVideosListSuccessYtliveProgramDataItem(
+      items.append(GetYtliveVideosListSuccessYtliveProgramsDataItem(
         channel_id=snippet_channel_id,
         channel_title=snippet_channel_title,
         video_id=video_id,
         title=snippet['title'],
         description=snippet['description'],
         live_broadcast_content=snippet['liveBroadcastContent'],
-        thumbnails=GetYtliveVideosListSuccessYtliveProgramDataItemThumbnails(
-          default=GetYtliveVideosListSuccessYtliveProgramDataItemThumbnail(
+        thumbnails=GetYtliveVideosListSuccessYtliveProgramsDataItemThumbnails(
+          default=GetYtliveVideosListSuccessYtliveProgramsDataItemThumbnail(
             url=thumbnail_default['url'],
             width=thumbnail_default['width'],
             height=thumbnail_default['height'],
           ) if thumbnail_default is not None else None,
-          medium=GetYtliveVideosListSuccessYtliveProgramDataItemThumbnail(
+          medium=GetYtliveVideosListSuccessYtliveProgramsDataItemThumbnail(
             url=thumbnail_medium['url'],
             width=thumbnail_medium['width'],
             height=thumbnail_medium['height'],
           ) if thumbnail_medium is not None else None,
-          high=GetYtliveVideosListSuccessYtliveProgramDataItemThumbnail(
+          high=GetYtliveVideosListSuccessYtliveProgramsDataItemThumbnail(
             url=thumbnail_high['url'],
             width=thumbnail_high['width'],
             height=thumbnail_high['height'],
           ) if thumbnail_high is not None else None,
-          standard=GetYtliveVideosListSuccessYtliveProgramDataItemThumbnail(
+          standard=GetYtliveVideosListSuccessYtliveProgramsDataItemThumbnail(
             url=thumbnail_standard['url'],
             width=thumbnail_standard['width'],
             height=thumbnail_standard['height'],
           ) if thumbnail_standard is not None else None,
-          maxres=GetYtliveVideosListSuccessYtliveProgramDataItemThumbnail(
+          maxres=GetYtliveVideosListSuccessYtliveProgramsDataItemThumbnail(
             url=thumbnail_maxres['url'],
             width=thumbnail_maxres['width'],
             height=thumbnail_maxres['height'],
           ) if thumbnail_maxres is not None else None,
         ),
-        status=GetYtliveVideosListSuccessYtliveProgramDataItemStatus(
+        status=GetYtliveVideosListSuccessYtliveProgramsDataItemStatus(
           upload_status=upload_status,
           privacy_status=privacy_status,
         ),
         live_streaming_details=(
-          GetYtliveVideosListSuccessYtliveProgramDataItemLiveStreamingDetails(
+          GetYtliveVideosListSuccessYtliveProgramsDataItemLiveStreamingDetails(
             actual_start_time=actual_start_time,
             actual_end_time=actual_end_time,
             scheduled_start_time=scheduled_start_time,
@@ -602,10 +602,10 @@ def get_ytlive_videos_list(
         ),
       ))
 
-    return GetYtliveVideosListSuccessYtliveProgramResult(
+    return GetYtliveVideosListSuccessYtliveProgramsResult(
       result_type='success',
       data_type='ytlive_programs',
-      data=GetYtliveVideosListSuccessYtliveProgramData(
+      data=GetYtliveVideosListSuccessYtliveProgramsData(
         items=items,
       )
     )

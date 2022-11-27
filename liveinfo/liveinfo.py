@@ -29,7 +29,7 @@ def get_live_program(
   useragent: str = default_useragent,
 ) -> Union[
   nicolive.GetNicoliveProgramNicoliveProgramData,
-  ytlive.GetYtliveProgramsSuccessYtliveProgramData,
+  ytlive.GetYtliveProgramsSuccessYtliveProgramsData,
 ]:
   if service is None:
     service = guess_service(live_id_or_url=live_id_or_url)
