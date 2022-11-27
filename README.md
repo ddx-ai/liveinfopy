@@ -49,6 +49,16 @@ python3 main.py -s nicolive "ch1072"
 python3 main.py -s nicolive "ch2646073"
 ```
 
+## Development
+
+```shell
+flake8
+
+mypy .
+
+# pytest tests/
+```
+
 ## API研究
 
 以下、未実装または実装予定のない内容が含まれます。
