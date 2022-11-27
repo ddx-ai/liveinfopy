@@ -2,6 +2,8 @@
 
 ## Installation
 
+- Python 3.10
+
 ### PyPI
 
 - <https://pypi.org/project/aoirint-liveinfo/>
@@ -13,21 +15,6 @@ pip3 install aoirint-liveinfo
 ### Binary
 
 - <https://github.com/aoirint/liveinfopy/releases>
-
-
-
-## Dependencies
-
-- Python 3.10
-
-```
-python3 -m venv venv
-source venv/bin/activate
-
-pip3 install -r requirements.txt
-```
-
-If you are using pyenv, see [pyenv and PyInstaller](https://pyinstaller.org/en/stable/development/venv.html).
 
 
 ## Usage
@@ -70,6 +57,20 @@ liveinfo -s nicolive "ch2646073"
 
 
 ## Development
+
+### Install dependencies
+
+```
+python3 -m venv venv
+source venv/bin/activate
+
+pip3 install -r requirements.txt
+```
+
+If you are using pyenv, see [pyenv and PyInstaller](https://pyinstaller.org/en/stable/development/venv.html).
+
+
+### Run test
 
 ```shell
 flake8
