@@ -22,6 +22,8 @@ pip3 install aoirint-liveinfo
 ### ニコニコ生放送 `live.nicovideo.jp`
 
 ```shell
+liveinfo -s nicolive "co5633084"
+
 # 番組 （ 月刊ニコニコインフォチャンネル https://live.nicovideo.jp/watch/lv339313375 ）
 liveinfo -s nicolive "lv339313375"
 
@@ -54,6 +56,34 @@ liveinfo -s nicolive "ch1072"
 # ニコニコチャンネル （月刊ニコニコインフォチャンネル https://ch.nicovideo.jp/weekly-niconico-info ）
 liveinfo -s nicolive "ch2646073"
 ```
+
+
+### YouTube Live
+
+YouTube Data API v3を使用します。APIキーが必要です。
+以下の公式ドキュメントに沿って、YouTube Data API v3にアクセスできるAPIキーを発行してください。
+
+- <https://developers.google.com/youtube/v3/getting-started>
+
+CLIでは、APIキーは、引数の値・引数の値で指定されたファイル・環境変数の値・環境変数の値で指定されたファイル、のいずれかとして渡します。
+自身の用途に適した安全な方法でAPIキーを渡すようにしてください。
+
+なお、CLI以外の利用（ライブラリとしての利用）では、これらの引数や環境変数は使用されません。
+
+- 引数の値: `--ytlive_api_key`
+- 引数の値で指定されたファイル: `--ytlive_api_key_file`
+- 環境変数の値: `LIVEINFO_YTLIVE_API_KEY`
+- 環境変数の値で指定されたファイル: `LIVEINFO_YTLIVE_API_KEY_FILE`
+
+```shell
+liveinfo -s ytlive "UC7OazbQ3Eo9vrkcReXGIZkQ"
+```
+
+現在の仕様
+
+- 最新5件の動画・生放送・プレミア公開動画から、生放送・プレミア公開動画を抽出
+- 公開
+- 公開設定が「公開」のコンテンツのみを返す（限定公開、非公開は含まれない）
 
 
 ## Development
