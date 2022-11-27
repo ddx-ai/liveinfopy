@@ -24,8 +24,9 @@ setup(
   #   ],
   # },
 
-  install_requires=Path('requirements.in')
-    .read_text(encoding='utf-8').splitlines(),
+  install_requires=(
+    Path('requirements.in').read_text(encoding='utf-8').splitlines()
+  ),
 
   author='aoirint',
   author_email='aoirint@gmail.com',
