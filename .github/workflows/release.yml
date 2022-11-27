@@ -17,17 +17,25 @@ jobs:
           - 
             os: ubuntu-20.04
             python_version: '3.8.14' # the latest version of 3.8.x
+            sed: 'sed'
           - 
             os: windows-2019
             python_version: '3.8.10' # the latest version of 3.8.x
+            sed: 'sed'
           - 
             os: macos-11
             python_version: '3.8.14' # the latest version of 3.8.x
+            sed: 'gsed'
 
     runs-on: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v3
+
+      - name: Install gsed for macOS
+        if: startsWith(matrix.os, 'macos-')
+        shell: bash
+        run: brew install gnu-sed
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -44,8 +52,9 @@ jobs:
             pip3 install wheel
 
       - name: Replace version
+        shell: bash
         run: |
-          sed -i "s/__VERSION__ = '0.0.0'/__VERSION__ = '${{ env.VERSION }}'/" live_info_api_client/__init__.py
+          "${{ matrix.sed }}" -i "s/__VERSION__ = '0.0.0'/__VERSION__ = '${{ env.VERSION }}'/" live_info_api_client/__init__.py
 
       - name: Build Package
         run: python3 setup.py sdist bdist_wheel
