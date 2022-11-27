@@ -7,3 +7,4 @@ types-beautifulsoup4
 types-setuptools
 pytest
 flake8
+pyinstaller
