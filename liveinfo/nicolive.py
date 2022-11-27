@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup, Tag
 import json
 from dataclasses import dataclass
-from typing import Literal, Optional, Union
+from typing import Literal, Optional, Union, List
 import re
 from urllib.parse import urlparse
 
@@ -17,7 +17,7 @@ class GetNicoliveProgramNicoliveProgramData:
   name: Optional[str]
   description: Optional[str]
   url: Optional[str]
-  thumbnail_url: Optional[str]
+  thumbnail_url: Optional[List[str]]
   start_date: Optional[str]  # ISO8601 timezone-aware datetime string
   end_date: Optional[str]  # ISO8601 timezone-aware datetime string
 
@@ -74,7 +74,7 @@ def get_nicolive_program(
       name: Optional[str] = None
       description: Optional[str] = None
       url: Optional[str] = None
-      thumbnail_url: Optional[str] = None
+      thumbnail_url: Optional[List[str]] = None
 
       # start_date, end_date
       #   ISO8601 timezone-aware datetime string
@@ -326,7 +326,7 @@ def parse_ogp_in_nicolive_watch_html(
 class ParseJsonLdInNicoliveWatchHtmlSuccessJsonLdData:
   name: Optional[str]
   description: Optional[str]
-  thumbnail_url: Optional[str]
+  thumbnail_url: Optional[List[str]]
   start_date: Optional[str]  # ISO8601 timezone-aware datetime string
   end_date: Optional[str]  # ISO8601 timezone-aware datetime string
 
