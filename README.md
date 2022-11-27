@@ -85,6 +85,15 @@ CLIでは、APIキーは、引数の値・引数の値で指定されたファ�
 liveinfo -s ytlive --ytlive_api_key_file /secrets/ytlive_api_key "UC7OazbQ3Eo9vrkcReXGIZkQ"
 ```
 
+ハンドル名が設定されたチャンネルでは、チャンネルIDがURLに含まれなくなるため、
+チャンネルIDを調べるのが難しいことがあります。
+チャンネル個別ページを開き、開発者ツールで以下のJavaScriptコードを実行すると、簡単にチャンネルIDを確認できます（2022-11-28 現在）。
+
+```shell
+document.querySelector('meta[itemprop="channelId"]').content
+```
+
+
 #### 現在の仕様
 
 - 最新5件の動画・生放送・プレミア公開動画から、生放送・プレミア公開動画を抽出
