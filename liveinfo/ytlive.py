@@ -46,7 +46,7 @@ class GetYtliveProgramsSuccessYtliveProgramsDataItem:
   video_id: str
   title: str
   description: str
-  live_broadcast_content: str
+  live_broadcast_content: Union[Literal['upcoming', 'live', 'none'], str]
   status: GetYtliveProgramsSuccessYtliveProgramsDataItemStatus
   thumbnails: GetYtliveProgramsSuccessYtliveProgramsDataItemThumbnails
   live_streaming_details: \
@@ -269,7 +269,7 @@ class GetYtliveSearchListSuccessYtliveProgramsDataItem:
   video_id: str
   title: str
   description: str
-  live_broadcast_content: str
+  live_broadcast_content: Union[Literal['upcoming', 'live', 'none'], str]
   thumbnails: GetYtliveSearchListSuccessYtliveProgramsDataItemThumbnails
 
 
@@ -453,7 +453,7 @@ class GetYtliveVideosListSuccessYtliveProgramsDataItem:
   video_id: str
   title: str
   description: str
-  live_broadcast_content: str
+  live_broadcast_content: Union[Literal['upcoming', 'live', 'none'], str]
   status: GetYtliveVideosListSuccessYtliveProgramsDataItemStatus
   thumbnails: GetYtliveVideosListSuccessYtliveProgramsDataItemThumbnails
   live_streaming_details: \
