@@ -61,7 +61,7 @@ class GetYtliveProgramsSuccessYtliveProgramData:
 @dataclass
 class GetYtliveProgramsSuccessYtliveProgramResult:
   result_type: Literal['success']
-  data_type: Literal['ytlive_program']
+  data_type: Literal['ytlive_programs']
   data: GetYtliveProgramsSuccessYtliveProgramData
 
 
@@ -107,7 +107,7 @@ def get_ytlive_programs(
     max_results=max_results,
   )
   if search_list_video_result.result_type == 'success':
-    if search_list_video_result.data_type == 'ytlive_program':
+    if search_list_video_result.data_type == 'ytlive_programs':
       search_list_video_items = search_list_video_result.data.items
 
       video_ids = [
@@ -122,7 +122,7 @@ def get_ytlive_programs(
       )
 
       if videos_list_result.result_type == 'success':
-        if videos_list_result.data_type == 'ytlive_program':
+        if videos_list_result.data_type == 'ytlive_programs':
           videos_list_items = videos_list_result.data.items
 
           items: List[GetYtliveProgramsSuccessYtliveProgramDataItem] = []
@@ -217,7 +217,7 @@ def get_ytlive_programs(
 
           return GetYtliveProgramsSuccessYtliveProgramResult(
             result_type='success',
-            data_type='ytlive_program',
+            data_type='ytlive_programs',
             data=GetYtliveProgramsSuccessYtliveProgramData(
               items=items,
             ),
@@ -281,7 +281,7 @@ class GetYtliveSearchListSuccessYtliveProgramData:
 @dataclass
 class GetYtliveSearchListSuccessYtliveProgramResult:
   result_type: Literal['success']
-  data_type: Literal['ytlive_program']
+  data_type: Literal['ytlive_programs']
   data: GetYtliveSearchListSuccessYtliveProgramData
 
 
@@ -384,7 +384,7 @@ def get_ytlive_search_list_video(
 
     return GetYtliveSearchListSuccessYtliveProgramResult(
       result_type='success',
-      data_type='ytlive_program',
+      data_type='ytlive_programs',
       data=GetYtliveSearchListSuccessYtliveProgramData(
         items=items,
       )
@@ -468,7 +468,7 @@ class GetYtliveVideosListSuccessYtliveProgramData:
 @dataclass
 class GetYtliveVideosListSuccessYtliveProgramResult:
   result_type: Literal['success']
-  data_type: Literal['ytlive_program']
+  data_type: Literal['ytlive_programs']
   data: GetYtliveVideosListSuccessYtliveProgramData
 
 
@@ -604,7 +604,7 @@ def get_ytlive_videos_list(
 
     return GetYtliveVideosListSuccessYtliveProgramResult(
       result_type='success',
-      data_type='ytlive_program',
+      data_type='ytlive_programs',
       data=GetYtliveVideosListSuccessYtliveProgramData(
         items=items,
       )

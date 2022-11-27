@@ -1,5 +1,5 @@
 from urllib.parse import urlparse
-from typing import Optional, Literal
+from typing import Optional, Literal, Union
 
 from . import __VERSION__
 from . import nicolive
@@ -27,7 +27,10 @@ def get_live_program(
   service: Optional[str],
   ytlive_api_key: Optional[str],
   useragent: str = default_useragent,
-) -> nicolive.GetNicoliveProgramNicoliveProgramData:
+) -> Union[
+  nicolive.GetNicoliveProgramNicoliveProgramData,
+  ytlive.GetYtliveProgramsSuccessYtliveProgramData,
+]:
   if service is None:
     service = guess_service(live_id_or_url=live_id_or_url)
 
@@ -55,14 +58,20 @@ def get_live_program(
   elif service == 'ytlive':
     assert ytlive_api_key is not None, 'ytlive_api_key is required'
 
-    print(
+    ytlive_programs_result = \
       ytlive.get_ytlive_programs(
         channel_id=live_id_or_url,
         useragent=useragent,
         api_key=ytlive_api_key,
       )
-    )
-    raise GetLiveProgramError(f'Unsupported service: {service}')
+
+    if ytlive_programs_result.result_type == 'success':
+      if ytlive_programs_result.data_type == 'ytlive_programs':
+        return ytlive_programs_result.data
+      else:
+        raise GetLiveProgramError(ytlive_programs_result)
+    else:
+      raise GetLiveProgramError(ytlive_programs_result)
 
   else:
     raise GetLiveProgramError(f'Unknown service: {service}')
