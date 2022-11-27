@@ -14,7 +14,7 @@ env:
 jobs:
   test:
     strategy:
-      fail-false: false
+      fail-fast: false
       matrix:
         include:
           - 
