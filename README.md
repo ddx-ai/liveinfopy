@@ -60,6 +60,8 @@ liveinfo -s nicolive "ch2646073"
 
 ### YouTube Live
 
+#### APIキー
+
 YouTube Data API v3を使用します。APIキーが必要です。
 以下の公式ドキュメントに沿って、YouTube Data API v3にアクセスできるAPIキーを発行してください。
 
@@ -74,6 +76,8 @@ CLIでは、APIキーは、引数の値・引数の値で指定されたファ�
 - 引数の値で指定されたファイル: `--ytlive_api_key_file`
 - 環境変数の値: `LIVEINFO_YTLIVE_API_KEY`
 - 環境変数の値で指定されたファイル: `LIVEINFO_YTLIVE_API_KEY_FILE`
+
+#### 使用例
 
 引数にはチャンネルID（URL・ハンドル名は使用不可）を渡してください。
 
