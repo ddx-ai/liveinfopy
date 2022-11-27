@@ -20,12 +20,12 @@ jobs:
           - 
             os: ubuntu-20.04
             python_version: '3.8.14' # the latest version of 3.8.x
-          # - 
-          #   os: windows-2019
-          #   python_version: '3.8.10' # the latest version of 3.8.x
-          # - 
-          #   os: macos-11
-          #   python_version: '3.8.14' # the latest version of 3.8.x
+          - 
+            os: windows-2019
+            python_version: '3.8.10' # the latest version of 3.8.x
+          - 
+            os: macos-11
+            python_version: '3.8.14' # the latest version of 3.8.x
 
     runs-on: ${{ matrix.os }}
 
