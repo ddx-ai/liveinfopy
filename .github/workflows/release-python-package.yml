@@ -82,25 +82,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Restore dist/ from Wheel artifact python-package-dist-sdist
+      - name: Restore dist/ from Python Package artifact python-package-dist-sdist
         uses: actions/download-artifact@v3
         with:
           name: python-package-dist-sdist
           path: ./dist
 
-      - name: Restore dist/ from Wheel artifact python-package-dist-bdist_wheel-linux-amd64
+      - name: Restore dist/ from Python Package artifact python-package-dist-bdist_wheel-linux-amd64
         uses: actions/download-artifact@v3
         with:
           name: python-package-dist-bdist_wheel-linux-amd64
           path: ./dist
 
-      - name: Restore dist/ from Wheel artifact python-package-dist-bdist_wheel-windows-amd64
+      - name: Restore dist/ from Python Package artifact python-package-dist-bdist_wheel-windows-amd64
         uses: actions/download-artifact@v3
         with:
           name: python-package-dist-bdist_wheel-windows-amd64
           path: ./dist
 
-      - name: Restore dist/ from Wheel artifact python-package-dist-bdist_wheel-macos-amd64
+      - name: Restore dist/ from Python Package artifact python-package-dist-bdist_wheel-macos-amd64
         uses: actions/download-artifact@v3
         with:
           name: python-package-dist-bdist_wheel-macos-amd64
