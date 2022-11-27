@@ -81,7 +81,7 @@ CLIでは、APIキーは、引数の値・引数の値で指定されたファ�
 liveinfo -s ytlive --ytlive_api_key_file /secrets/ytlive_api_key "UC7OazbQ3Eo9vrkcReXGIZkQ"
 ```
 
-現在の仕様
+#### 現在の仕様
 
 - 最新5件の動画・生放送・プレミア公開動画から、生放送・プレミア公開動画を抽出
 - 公開設定が「公開」のコンテンツのみを返す（限定公開、非公開は含まれない）
