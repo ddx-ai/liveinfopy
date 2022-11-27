@@ -1,6 +1,5 @@
 from urllib.parse import urlparse
 from typing import Optional, Literal
-from dataclasses import dataclass
 
 from . import __VERSION__
 from . import nicolive
@@ -17,16 +16,6 @@ default_application_useragent = \
 
 default_useragent = 'facebookexternalhit/1.1;Googlebot/2.1' \
             f';{default_application_useragent}'
-
-
-@dataclass
-class GetLiveProgramData:
-  name: Optional[str]
-  description: Optional[str]
-  url: Optional[str]
-  thumbnail_url: Optional[str]
-  start_date: Optional[str]  # ISO8601 timezone-aware datetime string
-  end_date: Optional[str]  # ISO8601 timezone-aware datetime string
 
 
 class GetLiveProgramError(Exception):
