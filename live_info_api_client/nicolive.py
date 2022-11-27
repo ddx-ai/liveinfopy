@@ -1,5 +1,5 @@
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 import json
 from dataclasses import dataclass
 from typing import Literal, Optional, Union
@@ -303,7 +303,9 @@ def parse_ogp_in_nicolive_watch_html(
   bs = BeautifulSoup(html, 'html5lib')
 
   og_url_tag = bs.find('meta', attrs={'property': 'og:url', 'content': True})
-  url = og_url_tag['content'] if og_url_tag is not None else None
+  url = og_url_tag['content'] if isinstance(og_url_tag, Tag) else None
+  if isinstance(url, list):
+    url = url[0]
 
   return ParseOgpInNicoliveWatchHtmlSuccessOgpResult(
     result_type='success',
@@ -359,12 +361,17 @@ def parse_json_ld_in_nicolive_watch_html(
   bs = BeautifulSoup(html, 'html5lib')
 
   json_ld_tag = bs.find('script', attrs={'type': 'application/ld+json'})
-  if json_ld_tag is None:
+  if not isinstance(json_ld_tag, Tag):
     return ParseJsonLdInNicoliveWatchHtmlNotFoundResult(
       result_type='not_found',
     )
 
   json_ld_text = json_ld_tag.string
+  if json_ld_text is None:
+    return ParseJsonLdInNicoliveWatchHtmlNotFoundResult(
+      result_type='not_found',
+    )
+
   json_ld_data = json.loads(json_ld_text)
 
   name = json_ld_data.get('name')
