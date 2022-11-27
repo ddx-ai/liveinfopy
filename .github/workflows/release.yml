@@ -92,8 +92,9 @@ jobs:
           ASSET_NAME="${{ matrix.asset_name }}"
           ASSET_NAME_STEM="${ASSET_NAME%.*}"
 
+          cd dist
           mkdir "${ASSET_NAME_STEM}"
-          mv "dist/${{ matrix.artifact_name }}" "${ASSET_NAME_STEM}/"
+          mv "${{ matrix.artifact_name }}" "${ASSET_NAME_STEM}/"
 
           "${{ matrix.tar }}" czf "${{ matrix.asset_name }}" "${ASSET_NAME_STEM}/"
 
@@ -104,8 +105,9 @@ jobs:
           ASSET_NAME="${{ matrix.asset_name }}"
           ASSET_NAME_STEM="${ASSET_NAME%.*}"
 
+          cd dist
           mkdir "${ASSET_NAME_STEM}"
-          mv "dist/${{ matrix.artifact_name }}" "${ASSET_NAME_STEM}/"
+          mv "${{ matrix.artifact_name }}" "${ASSET_NAME_STEM}/"
 
           zip -r "${{ matrix.asset_name }}" "${ASSET_NAME_STEM}/"
 
