@@ -11,6 +11,9 @@ source venv/bin/activate
 pip3 install -r requirements.txt
 ```
 
+If you are using pyenv, see [pyenv and PyInstaller](https://pyinstaller.org/en/stable/development/venv.html).
+
+
 ## Usage
 
 ### ニコニコ生放送 `live.nicovideo.jp`

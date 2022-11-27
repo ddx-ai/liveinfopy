@@ -65,6 +65,14 @@ jobs:
           user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}
 
+      - name: Upload Wheel to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.VERSION }}
+          target_commitish: ${{ github.sha }}
+          files: |-
+            dist/*.whl
+
       - name: Build Binary
         run: |
           pyinstaller --name liveinfo --onefile main.py
@@ -75,4 +83,4 @@ jobs:
           tag_name: ${{ env.VERSION }}
           target_commitish: ${{ github.sha }}
           files: |-
-            dist/*
+            dist/liveinfo
