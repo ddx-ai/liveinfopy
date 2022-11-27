@@ -1,5 +1,6 @@
 # Development dependencies
 -r requirements.in
+wheel
 mypy
 types-requests
 types-beautifulsoup4

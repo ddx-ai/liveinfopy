@@ -64,3 +64,5 @@ urllib3==1.26.13
     # via requests
 webencodings==0.5.1
     # via html5lib
+wheel==0.38.4
+    # via -r requirements-development.in
