@@ -21,7 +21,7 @@ from dataclasses import dataclass
 
 
 default_application_useragent = \
-  'live_info_api_client_py/0.1.0+dev ' \
+  f'live_info_api_client_py/{__VERSION__} ' \
   '(+https://github.com/aoirint/live_info_api_client_py)'
 
 default_useragent = 'facebookexternalhit/1.1;Googlebot/2.1' \
