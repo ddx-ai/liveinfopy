@@ -75,3 +75,7 @@ jobs:
       - name: Build
         shell: bash
         run: python3 setup.py sdist bdist_wheel
+
+      - name: Build Binary
+        run: |
+          pyinstaller --name liveinfo --onefile main.py
