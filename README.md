@@ -82,8 +82,11 @@ liveinfo -s ytlive "UC7OazbQ3Eo9vrkcReXGIZkQ"
 現在の仕様
 
 - 最新5件の動画・生放送・プレミア公開動画から、生放送・プレミア公開動画を抽出
-- 公開
 - 公開設定が「公開」のコンテンツのみを返す（限定公開、非公開は含まれない）
+- `liveBroadcastContent`
+  - 配信予約: `upcoming`
+  - 配信中: `live`
+  - 配信終了済みの生放送または動画: `none`
 
 
 ## Development
