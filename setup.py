@@ -5,7 +5,7 @@ from live_info_api_client import __VERSION__ as VERSION
 
 
 setup(
-  name='live_info_api_client',
+  name='aoirint_live_info',
 
   # version example
   #   '0.1.0-alpha', # == 0.1.0-alpha0 == 0.1.0a0
