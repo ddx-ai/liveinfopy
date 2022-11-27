@@ -75,6 +75,8 @@ CLIでは、APIキーは、引数の値・引数の値で指定されたファ�
 - 環境変数の値: `LIVEINFO_YTLIVE_API_KEY`
 - 環境変数の値で指定されたファイル: `LIVEINFO_YTLIVE_API_KEY_FILE`
 
+引数にはチャンネルID（URL・ハンドル名は使用不可）を渡してください。
+
 ```shell
 liveinfo -s ytlive "UC7OazbQ3Eo9vrkcReXGIZkQ"
 ```
