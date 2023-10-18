@@ -16,21 +16,21 @@ jobs:
         include:
           -
             os: ubuntu-20.04
-            python_version: '3.8.18' # the latest version of 3.8.x
+            python_version: '3.11.6' # the latest version of 3.11.x
             sed: 'sed'
             dist_artifact_name: binary-dist-linux-amd64
             binary_name: liveinfo
             asset_name: liveinfo-linux-amd64.tgz
           -
             os: windows-2019
-            python_version: '3.8.18' # the latest version of 3.8.x
+            python_version: '3.11.6' # the latest version of 3.11.x
             sed: 'sed'
             dist_artifact_name: binary-dist-windows-amd64
             binary_name: liveinfo.exe
             asset_name: liveinfo-windows-amd64.zip
           -
             os: macos-11
-            python_version: '3.8.18' # the latest version of 3.8.x
+            python_version: '3.11.6' # the latest version of 3.11.x
             sed: 'gsed'
             dist_artifact_name: binary-dist-macos-amd64
             binary_name: liveinfo

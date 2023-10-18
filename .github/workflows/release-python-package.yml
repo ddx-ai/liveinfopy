@@ -16,7 +16,7 @@ jobs:
         include:
           -
             os: ubuntu-20.04
-            python_version: '3.8.18' # the latest version of 3.8.x
+            python_version: '3.11.6' # the latest version of 3.11.x
             sed: 'sed'
             dist_artifact_name: python-package-dist
 
