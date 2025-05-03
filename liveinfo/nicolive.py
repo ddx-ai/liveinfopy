@@ -56,6 +56,25 @@ GetNicoliveProgramResult = Union[
   GetNicoliveProgramMaintenanceResult,
   GetNicoliveProgramUnknownErrorResult,
 ]
+invalid_chars = r'[<>:"/\\|?*]'
+def sanitize_filename(filename):
+    # 最初の空白をアンダースコアに変換
+    if filename.startswith(" "):
+        filename = "_" + filename[1:]
+
+    # 禁止文字をアンダースコアに置き換え
+    filename = re.sub(invalid_chars, "_", filename)
+
+    # CP932にエンコードできない文字をアンダースコアに置き換え
+    sanitized = []
+    for char in filename:
+        try:
+            char.encode("cp932")  # CP932でエンコード可能かチェック
+            sanitized.append(char)
+        except UnicodeEncodeError:
+            sanitized.append("_")  # エンコード不可の場合はアンダースコアに置換
+
+    return "".join(sanitized)
 
 
 def get_nicolive_program(
@@ -384,7 +403,9 @@ def parse_json_ld_in_nicolive_watch_html(
   #   ISO8601 timezone-aware datetime string
   start_date = publication.get('startDate')
   end_date = publication.get('endDate')
-
+  name=sanitize_filename(name)
+  description=sanitize_filename(description)
+  
   return ParseJsonLdInNicoliveWatchHtmlSuccessJsonLdResult(
     result_type='success',
     data_type='json_ld',
