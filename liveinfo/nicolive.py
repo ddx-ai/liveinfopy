@@ -24,7 +24,7 @@ class GetNicoliveProgramNicoliveProgramData:
   end_date: Optional[str]  # ISO8601 timezone-aware datetime string
   keywords: Optional[List[str]]
   genre: Optional[List[str]]
-  author: Optional[dict[str]]
+  author: Optional[str]
 
 
 @dataclass
@@ -106,7 +106,7 @@ def get_nicolive_program(
       end_date: Optional[str] = None
       keywords: Optional[List[str]] = None
       genre: Optional[List[str]] = None
-      author:Optional[dict[str]] = None
+      author:Optional[str] = None
       
       ogp_result = parse_ogp_in_nicolive_watch_html(html=html)
       if ogp_result.result_type == 'success':
@@ -359,7 +359,7 @@ class ParseJsonLdInNicoliveWatchHtmlSuccessJsonLdData:
   end_date: Optional[str]  # ISO8601 timezone-aware datetime string
   keywords: Optional[List[str]]
   genre: Optional[List[str]]
-  author:Optional[dict[str]]
+  author:Optional[str]
 
 @dataclass
 class ParseJsonLdInNicoliveWatchHtmlSuccessJsonLdResult:
@@ -419,9 +419,7 @@ def parse_json_ld_in_nicolive_watch_html(
   author = json_ld_data.get('author',{})
   name=sanitize_filename(name)
   description=sanitize_filename(description)
-  keywords=sanitize_filename(keywords)
-  genre=sanitize_filename(genre)
-  author=sanitize_filename(author)
+  author=sanitize_filename(author.name)
   
   
   
