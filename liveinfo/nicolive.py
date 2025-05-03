@@ -106,7 +106,7 @@ def get_nicolive_program(
       end_date: Optional[str] = None
       keywords: Optional[List[str]] = None
       genre: Optional[List[str]] = None
-      author:Optional[Dict[str]] = None
+      author:Optional[dict[str]] = None
       
       ogp_result = parse_ogp_in_nicolive_watch_html(html=html)
       if ogp_result.result_type == 'success':
