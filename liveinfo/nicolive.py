@@ -1,9 +1,11 @@
+import sys
 import requests
 from bs4 import BeautifulSoup, Tag
 import json
 from dataclasses import dataclass
 from typing import Literal, Optional, Union, List
 import re
+import os
 from urllib.parse import urlparse
 
 
