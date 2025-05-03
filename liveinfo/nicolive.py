@@ -22,6 +22,9 @@ class GetNicoliveProgramNicoliveProgramData:
   thumbnail_url: Optional[List[str]]
   start_date: Optional[str]  # ISO8601 timezone-aware datetime string
   end_date: Optional[str]  # ISO8601 timezone-aware datetime string
+  keywords: Optional[List[str]]
+  genre: Optional[List[str]]
+  author:Optional[Dict[str]]
 
 
 @dataclass
@@ -119,7 +122,7 @@ def get_nicolive_program(
           thumbnail_url = json_ld_data.thumbnail_url
           start_date = json_ld_data.start_date
           end_date = json_ld_data.end_date
-
+          author = json_ld_data.author.name
       return GetNicoliveProgramSuccessNicoliveProgramResult(
         result_type='success',
         data_type='nicolive_program',
@@ -130,6 +133,7 @@ def get_nicolive_program(
           thumbnail_url=thumbnail_url,
           start_date=start_date,
           end_date=end_date,
+          author=author,
         )
       )
 
@@ -398,15 +402,23 @@ def parse_json_ld_in_nicolive_watch_html(
   name = json_ld_data.get('name')
   description = json_ld_data.get('description')
   thumbnail_url = json_ld_data.get('thumbnailUrl', [])
-
   publication = json_ld_data.get('publication', {})
 
   # start_date, end_date
   #   ISO8601 timezone-aware datetime string
   start_date = publication.get('startDate')
   end_date = publication.get('endDate')
+
+  keywords = json_ld_data.get('keywords',[])
+  genre = json_ld_data.get('genre',[])
+  author = json_ld_data.get('author',{})
   name=sanitize_filename(name)
   description=sanitize_filename(description)
+  keywords=sanitize_filename(keywords)
+  genre=sanitize_filename(genre)
+  author=sanitize_filename(author)
+  
+  
   
   return ParseJsonLdInNicoliveWatchHtmlSuccessJsonLdResult(
     result_type='success',
@@ -417,5 +429,8 @@ def parse_json_ld_in_nicolive_watch_html(
        thumbnail_url=thumbnail_url,
        start_date=start_date,
        end_date=end_date,
+       keywords=keywords,
+       genre=genre,
+       author=author,
     )
   )
