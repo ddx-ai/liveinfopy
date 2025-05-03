@@ -122,7 +122,7 @@ def get_nicolive_program(
           thumbnail_url = json_ld_data.thumbnail_url
           start_date = json_ld_data.start_date
           end_date = json_ld_data.end_date
-          author = json_ld_data.author.name
+          author = json_ld_data.author
       return GetNicoliveProgramSuccessNicoliveProgramResult(
         result_type='success',
         data_type='nicolive_program',
