@@ -125,6 +125,8 @@ def get_nicolive_program(
           thumbnail_url = json_ld_data.thumbnail_url
           start_date = json_ld_data.start_date
           end_date = json_ld_data.end_date
+          keywords = json_ld_data.keywords
+          genre = json_ld_data.genre
           author = json_ld_data.author
       return GetNicoliveProgramSuccessNicoliveProgramResult(
         result_type='success',
@@ -136,6 +138,8 @@ def get_nicolive_program(
           thumbnail_url=thumbnail_url,
           start_date=start_date,
           end_date=end_date,
+          keywords=keywords,
+          genre=genre,
           author=author,
         )
       )
