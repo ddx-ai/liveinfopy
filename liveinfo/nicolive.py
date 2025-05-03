@@ -24,7 +24,7 @@ class GetNicoliveProgramNicoliveProgramData:
   end_date: Optional[str]  # ISO8601 timezone-aware datetime string
   keywords: Optional[List[str]]
   genre: Optional[List[str]]
-  author:Optional[Dict[str]]
+  author: Optional[dict[str]]
 
 
 @dataclass
