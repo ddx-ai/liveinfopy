@@ -416,10 +416,11 @@ def parse_json_ld_in_nicolive_watch_html(
 
   keywords = json_ld_data.get('keywords',[])
   genre = json_ld_data.get('genre',[])
-  author = json_ld_data.get('author',{})
+  author_base = json_ld_data.get('author',{})
+  author = author_base['name']
   name=sanitize_filename(name)
   description=sanitize_filename(description)
-  author=sanitize_filename(author.name)
+  author=sanitize_filename(author)
   
   
   
