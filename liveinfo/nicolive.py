@@ -417,5 +417,5 @@ def parse_json_ld_in_nicolive_watch_html(
       "thumbnail_url" : thumbnail_url,
       "start_date" : start_date,
       "end_date" : end_date,
-    )
+    }]
   )
