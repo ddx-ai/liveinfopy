@@ -104,7 +104,10 @@ def get_nicolive_program(
       #   ISO8601 timezone-aware datetime string
       start_date: Optional[str] = None
       end_date: Optional[str] = None
-
+      keywords: Optional[List[str]] = None
+      genre: Optional[List[str]] = None
+      author:Optional[Dict[str]] = None
+      
       ogp_result = parse_ogp_in_nicolive_watch_html(html=html)
       if ogp_result.result_type == 'success':
         if ogp_result.data_type == 'ogp':
@@ -425,7 +428,7 @@ def parse_json_ld_in_nicolive_watch_html(
   return ParseJsonLdInNicoliveWatchHtmlSuccessJsonLdResult(
     result_type='success',
     data_type='json_ld',
-       data=ParseJsonLdInNicoliveWatchHtmlSuccessJsonLdData(
+    data=ParseJsonLdInNicoliveWatchHtmlSuccessJsonLdData(
        name=name,
        description=description,
        thumbnail_url=thumbnail_url,
