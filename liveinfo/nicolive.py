@@ -354,7 +354,9 @@ class ParseJsonLdInNicoliveWatchHtmlSuccessJsonLdData:
   thumbnail_url: Optional[List[str]]
   start_date: Optional[str]  # ISO8601 timezone-aware datetime string
   end_date: Optional[str]  # ISO8601 timezone-aware datetime string
-
+  keywords: Optional[List[str]]
+  genre: Optional[List[str]]
+  author:Optional[Dict[str]]
 
 @dataclass
 class ParseJsonLdInNicoliveWatchHtmlSuccessJsonLdResult:
