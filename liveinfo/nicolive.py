@@ -69,7 +69,7 @@ def sanitize_filename(filename):
 
     # 禁止文字をアンダースコアに置き換え
     filename = re.sub(invalid_chars, "_", filename)
-
+    filename = filename.replace('\xe4', '')
     # CP932にエンコードできない文字をアンダースコアに置き換え
     sanitized = []
     for char in filename:
