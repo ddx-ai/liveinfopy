@@ -2,7 +2,7 @@ import sys
 import requests
 from bs4 import BeautifulSoup, Tag
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass,asdict
 from typing import Literal, Optional, Union, List
 import re
 import os
@@ -69,18 +69,16 @@ def sanitize_filename(filename):
 
     # 禁止文字をアンダースコアに置き換え
     filename = re.sub(invalid_chars, "_", filename)
-    filename = filename.replace('\xe4', '')
     # CP932にエンコードできない文字をアンダースコアに置き換え
     sanitized = []
     for char in filename:
         try:
-            char.encode("cp932")  # CP932でエンコード可能かチェック
+            char.encode("CP932")  # CP932でエンコード可能かチェック
             sanitized.append(char)
         except UnicodeEncodeError:
-            sanitized.append("_")  # エンコード不可の場合はアンダースコアに置換
+           sanitized.append("_")  # エンコード不可の場合はアンダースコアに置換
 
     return "".join(sanitized)
-
 
 def get_nicolive_program(
   live_id_or_url: str,
@@ -422,11 +420,12 @@ def parse_json_ld_in_nicolive_watch_html(
   genre = json_ld_data.get('genre',[])
   author_base = json_ld_data.get('author',{})
   author = author_base['name']
-  name=sanitize_filename(name)
-  description=sanitize_filename(description)
-  author=sanitize_filename(author)
-  
-  
+
+  name=sanitize_filename(name.encode("latin1").decode("utf-8"))
+  description=sanitize_filename(description.encode("latin1").decode("utf-8"))
+  author=sanitize_filename(author.encode("latin1").decode("utf-8"))
+  keywords=[sanitize_filename(value.encode("latin1").decode("utf-8")) for value in keywords]
+  genre=[sanitize_filename(value.encode("latin1").decode("utf-8")) for value in genre]
   
   return ParseJsonLdInNicoliveWatchHtmlSuccessJsonLdResult(
     result_type='success',

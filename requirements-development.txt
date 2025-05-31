@@ -36,7 +36,7 @@ pycodestyle==2.11.1
     # via flake8
 pyflakes==3.1.0
     # via flake8
-pyinstaller==6.1.0
+pyinstaller
     # via -r requirements-development.in
 pyinstaller-hooks-contrib==2023.10
     # via pyinstaller
