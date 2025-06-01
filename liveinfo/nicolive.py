@@ -72,14 +72,14 @@ def sanitize_filename(filename):
     # CP932にエンコードできない文字をアンダースコアに置き換え
     sanitized = []
     for char in filename:
-        try:
+       try:
             char.encode("CP932")  # CP932でエンコード可能かチェック
             sanitized.append(char)
         except UnicodeEncodeError:
            sanitized.append("_")  # エンコード不可の場合はアンダースコアに置換
 
     return "".join(sanitized)
-
+  
 def get_nicolive_program(
   live_id_or_url: str,
   useragent: str,
@@ -421,11 +421,17 @@ def parse_json_ld_in_nicolive_watch_html(
   author_base = json_ld_data.get('author',{})
   author = author_base['name']
 
-  name=sanitize_filename(name.encode("latin1").decode("utf-8"))
-  description=sanitize_filename(description.encode("latin1").decode("utf-8"))
-  author=sanitize_filename(author.encode("latin1").decode("utf-8"))
-  keywords=[sanitize_filename(value.encode("latin1").decode("utf-8")) for value in keywords]
-  genre=[sanitize_filename(value.encode("latin1").decode("utf-8")) for value in genre]
+  name = sanitize_filename(name.encode("latin1").decode("utf-8"))
+  description = sanitize_filename(description.encode("latin1").decode("utf-8"))
+  author = sanitize_filename(author.encode("latin1").decode("utf-8"))
+  keywords = [sanitize_filename(value.encode("latin1").decode("utf-8")) for value in keywords]
+  genre = [sanitize_filename(value.encode("latin1").decode("utf-8")) for value in genre]
+  
+  description = bs.find('script', attrs={'class': '___description___xPAJO ga-ns-description'})
+  description = sanitize_filename(description.encode("latin1").decode("utf-8"))
+
+  
+  
   
   return ParseJsonLdInNicoliveWatchHtmlSuccessJsonLdResult(
     result_type='success',
