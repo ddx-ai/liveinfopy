@@ -14,6 +14,8 @@ html5lib==1.1
     # via -r requirements.in
 idna==3.4
     # via requests
+requests==2.31.0
+    # via -r requirements.in
 six==1.16.0
     # via html5lib
 soupsieve==2.5
