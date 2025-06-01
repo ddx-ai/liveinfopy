@@ -428,7 +428,7 @@ def parse_json_ld_in_nicolive_watch_html(
   genre = [sanitize_filename(value.encode("latin1").decode("utf-8")) for value in genre]
   
   description = bs.find('script', attrs={'class': '___description___xPAJO ga-ns-description'})
-  description = sanitize_filename(description.encode("latin1").decode("utf-8"))
+  description = sanitize_filename(description.string.encode("latin1").decode("utf-8"))
 
   
   
