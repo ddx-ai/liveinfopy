@@ -72,11 +72,11 @@ def sanitize_filename(filename):
     # CP932にエンコードできない文字をアンダースコアに置き換え
     sanitized = []
     for char in filename:
-       try:
-            char.encode("CP932")  # CP932でエンコード可能かチェック
-            sanitized.append(char)
-        except UnicodeEncodeError:
-           sanitized.append("_")  # エンコード不可の場合はアンダースコアに置換
+      try:
+        char.encode("CP932")  # CP932でエンコード可能かチェック
+        sanitized.append(char)
+      except UnicodeEncodeError:
+        sanitized.append("_")  # エンコード不可の場合はアンダースコアに置換
 
     return "".join(sanitized)
   
